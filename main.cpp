@@ -25,11 +25,9 @@ using namespace std;
 string data, tag = "Invalid tag";
 fstream test, result;
 string INDIs[5000][2];
-string FAMs[1000][2];
+string FAMs[1000];
 bool indiv = false;
-int indiv_it = 0;
-bool fam = false;
-int fam_it = 0;
+int it = 0;
 
 /* Takes in the line's current level
  * prints the level to output and output.txt
@@ -70,10 +68,7 @@ int foundAZero() {
 		if(data == "INDI" || data == "FAM") {
 			if(data == "INDI") {
 				indiv = true;
-				indiv_it++;
-			} else if (data == "FAM") {
-				fam = true;
-				fam_it++;
+				it++;
 			}
 			tag = data;
 			cout << data << '\n';
@@ -96,24 +91,6 @@ int foundAZero() {
 int foundAOne() {
 	test >> data;
 	if(data == "HUSB" || data == "WIFE" || data == "CHIL") {
-		if (data == "HUSB" && fam == true) {
-		test >> data;
-		
-		//FAMs[fam_it]1] = data[2];
-		cout<< "debug" << endl;
-		//char temp = data[2];
-		//data[2].erase (data[2].begin()-2);
-		//data[2].erase (data[2].end()-1);
-		cout<< data[2] << " " << fam_it << endl;
-		FAMs[fam_it][0] = data[2];	
-		} else if (data == "WIFE" && fam == true) {
-		test >> data;
-		
-		//FAMs[fam_it]1] = data[2];
-		cout<< "debug" << endl;
-		cout<< data[2] << " " << fam_it << endl;
-		FAMs[fam_it][1] = data[2];
-		}
 		tag = data;
 		restOfLine();
 	} else if(data == "NAME" && indiv == true) {
@@ -125,9 +102,9 @@ int foundAOne() {
 		 */
 		char* fullName = &data[0];
 		char* splitName = strtok(fullName, " /");
-		INDIs[indiv_it][0] = splitName;
+		INDIs[it][0] = splitName;
 		splitName = strtok(NULL, " /");
-		INDIs[indiv_it][1] = splitName;
+		INDIs[it][1] = splitName;
 	} else if(data == "NAME" || data == "SEX" || data == "FAMC" || data == "FAMS" || data == "DEAT") {
 		tag = data;
 		restOfLine();
@@ -190,9 +167,9 @@ int main() {
 
 	cout << '\n' << "========================== INDIs ============================" << '\n';
 	result << '\n' << "========================== INDIs ============================" << endl;
-	for(j = 1; j <= indiv_it; j++) {
+	for(j = 1; j <= it; j++) {
 		cout << "@I" << j << "@: ";
-		cout << INDIs[j][0] << " " << INDIs[j][1] << '\n'; 
+		cout << INDIs[j][0] << " " << INDIs[j][1] << '\n';
 
 		result << "@I" << j << "@: ";
 		result << INDIs[j][0] << " " << INDIs[j][1] << endl;
@@ -200,16 +177,7 @@ int main() {
 
 	cout << '\n' << "========================== FAMs =============================" << '\n';
 	result << '\n' << "========================== FAMs =============================" << endl;
-	for(j = 1; j <= fam_it; j++) {
-		cout << "Family ID:" << "@F" << j << "@: " << '\n';
-		cout << "Husband ID:" << FAMs[j][0] << '\n';
-		cout << "Wife ID:" << FAMs[j][1] << '\n';
 
-		result << "Family ID:" << "@F" << j << "@: " << '\n';
-		result << "Husband ID:" << FAMs[j][0] << '\n';
-		result << "Wife ID:" << FAMs[j][1] << '\n';
-	}
-    
 	test.close();
 	result.close();
 	return 0;
