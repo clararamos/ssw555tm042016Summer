@@ -1,0 +1,585 @@
+0 NOTE
+0
+NOTE
+1 ssw555tm042016Summer
+1
+Invalid tag
+0 HEAD
+0
+HEAD
+1 SOUR Family Echo
+1
+Invalid tag
+2 WWW http://www.familyecho.com/
+2
+Invalid tag
+1 FILE Family 2
+1
+Invalid tag
+1 DATE 22 MAY 2016
+1
+Invalid tag
+1 DEST ANSTFILE
+1
+Invalid tag
+1 GEDC
+1
+Invalid tag
+2 VERS 5.5.1
+2
+Invalid tag
+2 FORM LINEAGE-LINKED
+2
+Invalid tag
+1 SUBM @I1@
+1
+Invalid tag
+2 NAME Clara Ramos
+2
+Invalid tag
+1 SUBN
+1
+Invalid tag
+1 CHAR UTF-8
+1
+Invalid tag
+0 @I1@ INDI
+0
+INDI
+1 NAME Clara /Ramos/
+1
+NAME
+2 GIVN Clara
+2
+Invalid tag
+2 SURN Ramos
+2
+Invalid tag
+2 _MARNM Ramos
+2
+Invalid tag
+1 SEX F
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 1 JAN 1995
+2
+DATE
+1 FAMC @F1@
+1
+FAMC
+0 @I2@ INDI
+0
+INDI
+1 NAME Tito /Ramos/
+1
+NAME
+2 GIVN Tito
+2
+Invalid tag
+2 SURN Ramos
+2
+Invalid tag
+2 _MARNM Ramos
+2
+Invalid tag
+1 SEX M
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 18 OCT 1965
+2
+DATE
+1 FAMS @F1@
+1
+FAMS
+0 @I3@ INDI
+0
+INDI
+1 NAME Sally /Paz/
+1
+NAME
+2 GIVN Sally
+2
+Invalid tag
+2 SURN Paz
+2
+Invalid tag
+2 _MARNM Ramos
+2
+Invalid tag
+1 SEX F
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 10 MAY 1970
+2
+DATE
+1 FAMS @F1@
+1
+FAMS
+1 FAMC @F2@
+1
+FAMC
+0 @I4@ INDI
+0
+INDI
+1 NAME Allison /Ramos/
+1
+NAME
+2 GIVN Allison
+2
+Invalid tag
+2 SURN Ramos
+2
+Invalid tag
+2 _MARNM Ramos
+2
+Invalid tag
+1 SEX F
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 4 APR 1996
+2
+DATE
+1 FAMC @F1@
+1
+FAMC
+0 @I5@ INDI
+0
+INDI
+1 NAME David /Paz/
+1
+NAME
+2 GIVN David
+2
+Invalid tag
+2 SURN Paz
+2
+Invalid tag
+2 _MARNM Paz
+2
+Invalid tag
+1 SEX M
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 13 SEP 1939
+2
+DATE
+1 DEAT Y
+1
+DEAT
+2 DATE 12 AUG 1999
+2
+DATE
+1 FAMS @F2@
+1
+FAMS
+1 FAMS @F3@
+1
+FAMS
+1 FAMC @F4@
+1
+FAMC
+0 @I6@ INDI
+0
+INDI
+1 NAME Netty /Gregorio/
+1
+NAME
+2 GIVN Netty
+2
+Invalid tag
+2 SURN Gregorio
+2
+Invalid tag
+2 _MARNM Paz
+2
+Invalid tag
+1 SEX F
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 28 JUN 1938
+2
+DATE
+1 DEAT Y
+1
+DEAT
+2 DATE 23 APR 2005
+2
+DATE
+1 FAMS @F2@
+1
+FAMS
+0 @I7@ INDI
+0
+INDI
+1 NAME Maria /Rivera/
+1
+NAME
+2 GIVN Maria
+2
+Invalid tag
+2 SURN Rivera
+2
+Invalid tag
+2 _MARNM Rivera
+2
+Invalid tag
+1 SEX F
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 14 FEB 1941
+2
+DATE
+1 DEAT Y
+1
+DEAT
+2 DATE 29 JUN 1966
+2
+DATE
+1 FAMS @F3@
+1
+FAMS
+0 @I8@ INDI
+0
+INDI
+1 NAME Francis /Paz/
+1
+NAME
+2 GIVN Francis
+2
+Invalid tag
+2 SURN Paz
+2
+Invalid tag
+2 _MARNM Paz
+2
+Invalid tag
+1 SEX M
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 7 DEC 1964
+2
+DATE
+1 FAMS @F5@
+1
+FAMS
+1 FAMC @F3@
+1
+FAMC
+0 @I9@ INDI
+0
+INDI
+1 NAME Ana /Tobar/
+1
+NAME
+2 GIVN Ana
+2
+Invalid tag
+2 SURN Tobar
+2
+Invalid tag
+2 _MARNM Paz
+2
+Invalid tag
+1 SEX F
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 2 JUN 1966
+2
+DATE
+1 FAMS @F5@
+1
+FAMS
+0 @I10@ INDI
+0
+INDI
+1 NAME Jake /Paz/
+1
+NAME
+2 GIVN Jake
+2
+Invalid tag
+2 SURN Paz
+2
+Invalid tag
+2 _MARNM Paz
+2
+Invalid tag
+1 SEX M
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 5 MAR 1990
+2
+DATE
+1 FAMC @F5@
+1
+FAMC
+0 @I11@ INDI
+0
+INDI
+1 NAME Bonnie /Paz/
+1
+NAME
+2 GIVN Bonnie
+2
+Invalid tag
+2 SURN Paz
+2
+Invalid tag
+2 _MARNM Paz
+2
+Invalid tag
+1 SEX F
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 26 JUL 1968
+2
+DATE
+1 FAMC @F2@
+1
+FAMC
+0 @I12@ INDI
+0
+INDI
+1 NAME Bobby /Paz/
+1
+NAME
+2 GIVN Bobby
+2
+Invalid tag
+2 SURN Paz
+2
+Invalid tag
+2 _MARNM Paz
+2
+Invalid tag
+1 SEX M
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 30 OCT 1965
+2
+DATE
+1 FAMC @F2@
+1
+FAMC
+0 @I13@ INDI
+0
+INDI
+1 NAME Eric /Paz/
+1
+NAME
+2 GIVN Eric
+2
+Invalid tag
+2 SURN Paz
+2
+Invalid tag
+2 _MARNM Paz
+2
+Invalid tag
+1 SEX M
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 11 SEP 1910
+2
+DATE
+1 DEAT Y
+1
+DEAT
+2 DATE 4 AUG 1965
+2
+DATE
+1 FAMS @F4@
+1
+FAMS
+0 @I14@ INDI
+0
+INDI
+1 NAME Ana /Intud/
+1
+NAME
+2 GIVN Ana
+2
+Invalid tag
+2 SURN Intud
+2
+Invalid tag
+2 _MARNM Paz
+2
+Invalid tag
+1 SEX F
+1
+SEX
+1 BIRT
+1
+BIRT
+2 DATE 1 MAR 1914
+2
+DATE
+1 DEAT Y
+1
+DEAT
+2 DATE 12 APR 1972
+2
+DATE
+1 FAMS @F4@
+1
+FAMS
+0 @F1@ FAM
+0
+FAM
+1 @I2@
+1
+@I2@
+1 @I3@
+1
+@I3@
+1 CHIL @I1@
+1
+CHIL
+1 CHIL @I4@
+1
+CHIL
+1 _CURRENT Y
+1
+Invalid tag
+0 @F2@ FAM
+0
+FAM
+1 @I5@
+1
+@I5@
+1 @I6@
+1
+@I6@
+1 CHIL @I3@
+1
+CHIL
+1 CHIL @I11@
+1
+CHIL
+1 CHIL @I12@
+1
+CHIL
+1 _CURRENT Y
+1
+Invalid tag
+0 @F3@ FAM
+0
+FAM
+1 @I5@
+1
+@I5@
+1 @I7@
+1
+@I7@
+1 CHIL @I8@
+1
+CHIL
+1 _CURRENT N
+1
+Invalid tag
+0 @F4@ FAM
+0
+FAM
+1 @I13@
+1
+@I13@
+1 @I14@
+1
+@I14@
+1 CHIL @I5@
+1
+CHIL
+1 _CURRENT Y
+1
+Invalid tag
+0 @F5@ FAM
+0
+FAM
+1 @I8@
+1
+@I8@
+1 @I9@
+1
+@I9@
+1 CHIL @I10@
+1
+CHIL
+1 _CURRENT Y
+1
+Invalid tag
+0 TRLR
+0
+TRLR
+
+========================== INDIs ============================
+@I1@: Clara Ramos
+@I2@: Tito Ramos
+@I3@: Sally Paz
+@I4@: Allison Ramos
+@I5@: David Paz
+@I6@: Netty Gregorio
+@I7@: Maria Rivera
+@I8@: Francis Paz
+@I9@: Ana Tobar
+@I10@: Jake Paz
+@I11@: Bonnie Paz
+@I12@: Bobby Paz
+@I13@: Eric Paz
+@I14@: Ana Intud
+
+========================== FAMs =============================
+Family ID:@F1@: 
+Husband ID:2
+Wife ID:3
+Family ID:@F2@: 
+Husband ID:5
+Wife ID:6
+Family ID:@F3@: 
+Husband ID:5
+Wife ID:7
+Family ID:@F4@: 
+Husband ID:1
+Wife ID:1
+Family ID:@F5@: 
+Husband ID:8
+Wife ID:9
