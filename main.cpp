@@ -388,70 +388,43 @@ int main() {
 	}
 
 	//print the IDs and names of all individuals
-		cout << '\n' << "========================== INDIs - Names -IDs - Gender ============================" << '\n';
-	result << '\n' << "========================== INDIs - Names -IDs- Gender============================" << endl;
+	cout << '\n' << "========================== INDIs - Names and IDs ============================" << '\n';
+	result << '\n' << "========================== INDIs - Names and IDs ============================" << endl;
 	for(j = 1; j <= indiv_it; j++) {
 		cout << "@I" << j << "@: ";
-		cout << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"Gender:"<< INDIs[j][2] << '\n';
+		cout << INDIs[j][0] << " " << INDIs[j][1] << '\n';
 
 		result << "@I" << j << "@: ";
-		result << INDIs[j][0] << " " << INDIs[j][1] <<"   "<<"Gender:"<< INDIs[j][2] <<endl;
+		result << INDIs[j][0] << " " << INDIs[j][1] << endl;
 	}
 
 	//print the family IDs as well as names and IDs of all husbands and wives
-	cout << '\n' << "========= FAMs-IDs - IDs -Spouses' Names- Sex - US21-Correct gender for role ==============" << '\n';
-	result << '\n' << "======== FAMs-IDs - IDs - Spouses' Names- Sex- US21- Correct gender for role ==============" << endl;
+	cout << '\n' << "========================== FAMs - IDs and Spouses' Names and IDs =============================" << '\n';
+	result << '\n' << "========================== FAMs - IDs and Spouses' Names and IDs =============================" << endl;
 	for(j = 1; j <= fam_it; j++) {
 		cout << "Family ID: " << "@F" << j << "@: " << '\n';
 		cout << "Husband ID: " << "@I" << FAMs[j][0] << "@" << '\n';
 		string temp = FAMs[j][0];
 		int temp1 = atoi(temp.c_str());
 		cout<< "Husband Name: " << INDIs[temp1][0] <<" "<<INDIs[temp1][1] <<"\n";
-		cout<<"Husband Sex:" <<INDIs[temp1][2]<<"\n";
-		// Check valid Sex tag for Husband
-		string temp_s= INDIs[temp1][2];
-		if(temp_s =="F")
-		{
-			cout<<"Husband should have Sex tag M"<<"\n";
-		}
 
 		cout << "Wife ID: " <<"@I"<< FAMs[j][1] <<"@"<< '\n';
 		string temp_W = FAMs[j][1];
 		int temp2 = atoi(temp_W.c_str());
 		cout<< "Wife Name: " << INDIs[temp2][0] <<" "<< INDIs[temp2][1] <<"\n";
-		cout<< "Wife Sex:" <<INDIs[temp2][2]<<"\n";
-		//check valid sex tag for wife
-		string tem = INDIs[temp2][2];
-		if(tem =="M")
-		{
-			cout<<"Wife should have Sex tag F"<< "\n";
-		}
-		
+
 		// Writing to output.txt
 		result << "Family ID: " << "@F" << j << "@: " << '\n';
 		result << "Husband ID: " << "@I" << FAMs[j][0] << "@" << '\n';
 		string temp_H1 = FAMs[j][0];
 		int temp3 = atoi(temp_H1.c_str());
 		result << "Husband Name: " << INDIs[temp3][0] << " " << INDIs[temp3][1] <<"\n";
-		result << "Husband Sex: " << INDIs[temp3][2] <<"\n";
-		string temprs_h= INDIs[temp3][2];
-		if(temprs_h =="F")
-		{
-			result << "Husband should have Sex tag M"<<"\n";
-		}
 
 		result << "Wife ID: " <<"@I"<< FAMs[j][1] << "@" << '\n';
 		string temp_W1 = FAMs[j][1];
 		int temp4 = atoi(temp_W1.c_str());
 		result << "Wife Name: " << INDIs[temp4][0] << " " << INDIs[temp4][1] <<"\n";
-		result << "Wife Sex: "<< INDIs[temp4][2];
-		string temprs_w= INDIs[temp4][2];
-		if (temprs_w =="M")
-		{
-			result <<"Wife should have Sex tag F"<<"\n";
-		}
 	}
-
 
 	//print anyone who was married before their birthdate
 	cout << '\n' << "========================== US02 - Birth before Marriage =============================" << '\n';
