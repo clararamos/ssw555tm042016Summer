@@ -325,27 +325,27 @@ void childBornAfterMarriage() {
 
 			//compare the years, then months, then days
 			if(atoi(marriage[2]) > atoi(indiv[2])) {
-				cout << "Error US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs before parents' marriage in Family @F" << j << "@." << '\n';
+				cout << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs before parents' marriage in Family @F" << j << "@." << '\n';
 				cout << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << '\n';
 				cout << "  Birth Date: " << indiv[0] << " " << indiv[1] << " " << indiv[2] << '\n';
 
-				result << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs after marriage date in Family @F" << j << "@." << endl;
+				result << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs after marriage date in Family @F" << j << "@." << endl;
 				result << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << endl;
 				result << "  Birth Date: " << indiv[0] << " " << indiv[1] << " " << indiv[2] << endl;
 			} else if(atoi(marriage[2]) == atoi(indiv[2]) && monthToInt(marriage[1]) > monthToInt(indiv[1])) {
-				cout << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs after marriage date in Family @F" << j << "@." << '\n';
+				cout << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs after marriage date in Family @F" << j << "@." << '\n';
 				cout << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << '\n';
 				cout << "  Birth Date: " << day << " " << month << " " << indiv[2] << '\n';
 
-				result << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs after marriage date in Family @F" << j << "@." << endl;
+				result << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs after marriage date in Family @F" << j << "@." << endl;
 				result << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << endl;
 				result << "  Birth Date: " << day << " " << month << " " << indiv[2] << endl;
 			} else if(atoi(marriage[2]) == atoi(indiv[2]) && monthToInt(marriage[1]) == monthToInt(indiv[1]) && atoi(marriage[0]) >= day) {
-				cout << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs after marriage date in Family @F" << j << "@." << '\n';
+				cout << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs after marriage date in Family @F" << j << "@." << '\n';
 				cout << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << '\n';
 				cout << "  Birth Date: " << day << " " << indiv[1] << " " << indiv[2] << '\n';
 
-				result << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs after marriage date in Family @F" << j << "@." << endl;
+				result << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (@I" << id << "@) occurs after marriage date in Family @F" << j << "@." << endl;
 				result << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << endl;
 				result << "  Birth Date: " << day << " " << indiv[1] << " " << indiv[2] << endl;
 			}
@@ -426,7 +426,7 @@ int main() {
 		{
 			cout<<"Wife should have Sex tag F"<< "\n";
 		}
-		
+
 		// Writing to output.txt
 		result << "Family ID: " << "@F" << j << "@: " << '\n';
 		result << "Husband ID: " << "@I" << FAMs[j][0] << "@" << '\n';
