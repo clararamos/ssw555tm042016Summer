@@ -359,10 +359,14 @@ void childBornAfterMarriage() {
  * reads the level of each line and runs appropriate function
  * if unrecognized, prints error message and terminates program
  */
-int main() {
+int main(int argc, char* argv[]) {
 	string num;
 	int j;
-	test.open("GEDCOM_test.ged", ios::in);
+	const char* def = "GEDCOM_test.ged";
+	if(argc > 1) {
+		def = argv[1];
+	}
+	test.open(def, ios::in);
 	result.open("output.txt", ios::out);
 	test >> data;
 	while(!test.eof()) {
