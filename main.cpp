@@ -26,7 +26,10 @@ using namespace std;
 string data, tag = "Invalid tag", date = "N/A";
 fstream test, result;
 bool indiv = false, fam = false;
-int indiv_it = 0, fam_it = 0, child_it;
+int indiv_it = 0, fam_it = 0, child_it, u_fam=0, u_id=0;
+string unique_id[20];
+string unique_fam[10];
+string myArr[20];
 
 /* INDIs = STRING array that holds people's information
  * Based on indices in the following format:
@@ -85,6 +88,15 @@ int foundAZero() {
 		result << data << endl;
 	} else if(data[0] == '@') {
 		cout << data << " ";
+		if(data[1]== 'I')
+		{
+			unique_id[u_id++]=data;
+			
+		}
+		else if(data[1]=='F')
+		{
+			unique_fam[u_fam++]=data;
+		}
 		result << data << " ";
 		test >> data;
 
@@ -355,21 +367,123 @@ void childBornAfterMarriage() {
 	free(indiv);
 }
 
+void checkGender()
+{
+	int j;
+	for(j = 1; j <= fam_it; j++) 
+	{
+		string temp = FAMs[j][0];
+		int temp1 = atoi(temp.c_str());
+		string temp_s= INDIs[temp1][2];
+		if(temp_s =="F")
+		{
+			cout<< INDIs[temp1][0]<<" "<<INDIs[temp1][1]<<" is a husband & should have Sex tag M"<<"\n";
+		}
+
+		string temp_W = FAMs[j][1];
+		int temp2 = atoi(temp_W.c_str());
+		string tem = INDIs[temp2][2];
+		if(tem =="M")
+		{
+			cout<<INDIs[temp2][0]<<" "<< INDIs[temp2][1]<<"is a Wife & should have Sex tag F"<< "\n";
+		}
+
+		// Writing to output.txt
+		string temp_H1 = FAMs[j][0];
+		int temp3 = atoi(temp_H1.c_str());
+		string temprs_h= INDIs[temp3][2];
+		if(temprs_h =="F")
+		{
+			result <<INDIs[temp3][0] << " " << INDIs[temp3][1] << "is a Husband & should have Sex tag M"<<"\n";
+		}
+
+		string temp_W1 = FAMs[j][1];
+		int temp4 = atoi(temp_W1.c_str());
+		string temprs_w= INDIs[temp4][2];
+		if (temprs_w =="M")
+		{
+			result <<INDIs[temp4][0] << " " << INDIs[temp4][1]<<"is a Wife & should have Sex tag F"<<"\n";
+		}
+	}
+}
+
+checkID()
+{
+	int arr_size = sizeof(unique_id)/sizeof(unique_id[0]);
+	int size=0;
+	
+	for(int i=0;i< arr_size; i++)
+	{
+		if(unique_id[i]!="")
+			size++;
+	}
+	for(int i = 0; i < size; i++)
+      for(int j = i+1; j < size; j++)
+        if(unique_id[i] == unique_id[j])
+           cout<<"Individual ID: "<<unique_id[i]<<" of"<<" "<< INDIs[j][0] << " " << INDIs[j][1] << " must be unique."<<endl;
+           
+           int arr_sizet = sizeof(unique_id)/sizeof(unique_id[0]);
+	int sizet=0;
+	
+	for(int i=0;i< arr_sizet; i++)
+	{
+		if(unique_id[i]!="")
+			sizet++;
+	}
+	for(int i = 0; i < sizet; i++)
+      for(int j = i+1; j < sizet; j++)
+        if(unique_id[i] == unique_id[j])
+              result<<"Individual ID: "<<unique_id[i]<<" of"<<" "<< INDIs[j][0] << " " << INDIs[j][1] << " must be unique."<<endl;
+}
+
+checkFid()
+{
+	int arr_sizef = sizeof(unique_fam)/sizeof(unique_fam[0]);
+	int size=0;
+	
+	for(int i=0;i< arr_sizef; i++)
+	{
+		if(unique_fam[i]!="")
+			size++;
+	}
+	for(int i = 0; i < size; i++)
+      for(int j = i+1; j < size; j++)
+        if(unique_fam[i] == unique_fam[j])
+           cout<<"Family ID: "<<unique_fam[i] << " must be unique";
+           
+    int arr_sizef1 = sizeof(unique_fam)/sizeof(unique_fam[0]);
+	int size1=0;
+           
+           for(int i=0;i< arr_sizef1; i++)
+	{
+		if(unique_fam[i]!="")
+			size1++;
+	}
+	for(int i = 0; i < size1; i++)
+      for(int j = i+1; j < size1; j++)
+        if(unique_fam[i] == unique_fam[j])
+			result<<"Family Id:"<<unique_fam[i] <<"must be unique";
+}
+
+
 /* opens GEDCOM file and creates new output.txt
  * reads the level of each line and runs appropriate function
  * if unrecognized, prints error message and terminates program
  */
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+ {
 	string num;
 	int j;
 	const char* def = "GEDCOM_test.ged";
-	if(argc > 1) {
+	if(argc > 1) 
+	{
 		def = argv[1];
 	}
 	test.open(def, ios::in);
 	result.open("output.txt", ios::out);
 	test >> data;
-	while(!test.eof()) {
+	while(!test.eof())
+	 {
 		tag = "Invalid tag";
 		cout << data << " ";
 		result << data << " ";
@@ -394,7 +508,8 @@ int main(int argc, char* argv[]) {
 	//print the IDs and names of all individuals
 		cout << '\n' << "========================== INDIs - Names -IDs - Gender ============================" << '\n';
 	result << '\n' << "========================== INDIs - Names -IDs- Gender============================" << endl;
-	for(j = 1; j <= indiv_it; j++) {
+	for(j = 1; j <= indiv_it; j++) 
+	{
 		cout << "@I" << j << "@: ";
 		cout << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"Gender:"<< INDIs[j][2] << '\n';
 
@@ -405,31 +520,20 @@ int main(int argc, char* argv[]) {
 	//print the family IDs as well as names and IDs of all husbands and wives
 	cout << '\n' << "========= FAMs-IDs - IDs -Spouses' Names- Sex - US21-Correct gender for role ==============" << '\n';
 	result << '\n' << "======== FAMs-IDs - IDs - Spouses' Names- Sex- US21- Correct gender for role ==============" << endl;
-	for(j = 1; j <= fam_it; j++) {
+	for(j = 1; j <= fam_it; j++) 
+	{
 		cout << "Family ID: " << "@F" << j << "@: " << '\n';
 		cout << "Husband ID: " << "@I" << FAMs[j][0] << "@" << '\n';
 		string temp = FAMs[j][0];
 		int temp1 = atoi(temp.c_str());
 		cout<< "Husband Name: " << INDIs[temp1][0] <<" "<<INDIs[temp1][1] <<"\n";
 		cout<<"Husband Sex:" <<INDIs[temp1][2]<<"\n";
-		// Check valid Sex tag for Husband
-		string temp_s= INDIs[temp1][2];
-		if(temp_s =="F")
-		{
-			cout<<"Husband should have Sex tag M"<<"\n";
-		}
 
 		cout << "Wife ID: " <<"@I"<< FAMs[j][1] <<"@"<< '\n';
 		string temp_W = FAMs[j][1];
 		int temp2 = atoi(temp_W.c_str());
 		cout<< "Wife Name: " << INDIs[temp2][0] <<" "<< INDIs[temp2][1] <<"\n";
 		cout<< "Wife Sex:" <<INDIs[temp2][2]<<"\n";
-		//check valid sex tag for wife
-		string tem = INDIs[temp2][2];
-		if(tem =="M")
-		{
-			cout<<"Wife should have Sex tag F"<< "\n";
-		}
 
 		// Writing to output.txt
 		result << "Family ID: " << "@F" << j << "@: " << '\n';
@@ -438,22 +542,13 @@ int main(int argc, char* argv[]) {
 		int temp3 = atoi(temp_H1.c_str());
 		result << "Husband Name: " << INDIs[temp3][0] << " " << INDIs[temp3][1] <<"\n";
 		result << "Husband Sex: " << INDIs[temp3][2] <<"\n";
-		string temprs_h= INDIs[temp3][2];
-		if(temprs_h =="F")
-		{
-			result << "Husband should have Sex tag M"<<"\n";
-		}
 
 		result << "Wife ID: " <<"@I"<< FAMs[j][1] << "@" << '\n';
 		string temp_W1 = FAMs[j][1];
 		int temp4 = atoi(temp_W1.c_str());
 		result << "Wife Name: " << INDIs[temp4][0] << " " << INDIs[temp4][1] <<"\n";
 		result << "Wife Sex: "<< INDIs[temp4][2];
-		string temprs_w= INDIs[temp4][2];
-		if (temprs_w =="M")
-		{
-			result <<"Wife should have Sex tag F"<<"\n";
-		}
+		
 	}
 
 
@@ -466,6 +561,17 @@ int main(int argc, char* argv[]) {
 	cout << '\n' << "========================== US08 - Child born after Parents' Marriage =============================" << '\n';
 	result << '\n' << "========================== US08 - Child born after Parents' Marriage =============================" << endl;
 	childBornAfterMarriage();
+	
+	// print husband having gender female and wife having gender male in family
+		cout << '\n' << "========================== US21 -Correct gender for role =============================" << '\n';
+	result << '\n' << "========================== US21 - Correct gender for role =============================" << endl;
+	checkGender();
+
+    cout << '\n' << "========================== US22 -Unique ID for Individual and family =============================" << '\n';
+	result << '\n' << "========================== US22 -Unique ID for Individual and family =============================" << endl;
+	checkID();
+	checkFid();
+	
 
 	test.close();
 	result.close();
