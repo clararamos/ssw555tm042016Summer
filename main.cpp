@@ -29,7 +29,6 @@ bool indiv = false, fam = false;
 int indiv_it = 0, fam_it = 0, child_it, u_fam=0, u_id=0;
 string unique_id[20];
 string unique_fam[10];
-string myArr[20];
 
 /* INDIs = STRING array that holds people's information
  * Based on indices in the following format:
@@ -375,26 +374,43 @@ void checkGender()
 		string temp = FAMs[j][0];
 		int temp1 = atoi(temp.c_str());
 		string temp_s= INDIs[temp1][2];
+		
+		string temp_W12 = FAMs[j][1];
+		int temp12 = atoi(temp_W12.c_str());
+		string tem12 = INDIs[temp12][2];
+		
 		if(temp_s =="F")
 		{
-			cout<< INDIs[temp1][0]<<" "<<INDIs[temp1][1]<<" is a husband & should have Sex tag M"<<"\n";
+			temp_s="Female";
+			cout<<" Error US21-Correct gender for "<< INDIs[temp1][0]<<" "<<INDIs[temp1][1]<<" having sex "<<temp_s<<" must be male as he is husband of "
+			     <<INDIs[temp12][0]<<" "<< INDIs[temp12][1]<<"\n\n";
 		}
 
 		string temp_W = FAMs[j][1];
 		int temp2 = atoi(temp_W.c_str());
 		string tem = INDIs[temp2][2];
+		
+		
 		if(tem =="M")
 		{
-			cout<<INDIs[temp2][0]<<" "<< INDIs[temp2][1]<<"is a Wife & should have Sex tag F"<< "\n";
+			tem= "Male";
+			cout<<"Error US21-Correct gender for "<<INDIs[temp2][0]<<" "<< INDIs[temp2][1]<<" having gender "<<tem<<" must be female as she is wife of "
+			     << INDIs[temp1][0]<<" "<<INDIs[temp1][1]<<endl;
 		}
 
 		// Writing to output.txt
 		string temp_H1 = FAMs[j][0];
 		int temp3 = atoi(temp_H1.c_str());
 		string temprs_h= INDIs[temp3][2];
+		
+		string temp_W123 = FAMs[j][1];
+		int temp123 = atoi(temp_W123.c_str());
+		string tem123 = INDIs[temp123][2];
 		if(temprs_h =="F")
 		{
-			result <<INDIs[temp3][0] << " " << INDIs[temp3][1] << "is a Husband & should have Sex tag M"<<"\n";
+			temprs_h= "Female";
+			result <<" Error US21-Correct gender for "<<INDIs[temp3][0] << " " << INDIs[temp3][1] <<" having gender "<<temprs_h<<" must be male as he is husband of "
+			     <<INDIs[temp123][0]<<" "<< INDIs[temp123][1]<<"\n";
 		}
 
 		string temp_W1 = FAMs[j][1];
@@ -402,7 +418,9 @@ void checkGender()
 		string temprs_w= INDIs[temp4][2];
 		if (temprs_w =="M")
 		{
-			result <<INDIs[temp4][0] << " " << INDIs[temp4][1]<<"is a Wife & should have Sex tag F"<<"\n";
+			temprs_w= "Male";
+			result <<"Error US21-Correct gender for "<<INDIs[temp4][0] << " " << INDIs[temp4][1]<<" having gender" <<temprs_w<<" must be female as she is wife of"
+					<< INDIs[temp1][0]<<" "<<INDIs[temp1][1]<<endl;
 		}
 	}
 }
@@ -420,11 +438,15 @@ checkID()
 	for(int i = 0; i < size; i++)
       for(int j = i+1; j < size; j++)
         if(unique_id[i] == unique_id[j])
-           cout<<"Individual ID: "<<unique_id[i]<<" of"<<" "<< INDIs[j][0] << " " << INDIs[j][1] << " must be unique."<<endl;
-           
+         {
+		   cout<<"Error US22:Individual ID: "<<unique_id[i]<<" of"<<" "<< INDIs[i][0] << " " << INDIs[i][1] << " is conflicting with Individual ID:"
+		       <<unique_id[j]<<" of"<<" "<<INDIs[j][0] << " " << INDIs[j][1]<<endl;
+        
+       	}
            int arr_sizet = sizeof(unique_id)/sizeof(unique_id[0]);
 	int sizet=0;
 	
+	// printing to output.txt
 	for(int i=0;i< arr_sizet; i++)
 	{
 		if(unique_id[i]!="")
@@ -433,7 +455,8 @@ checkID()
 	for(int i = 0; i < sizet; i++)
       for(int j = i+1; j < sizet; j++)
         if(unique_id[i] == unique_id[j])
-              result<<"Individual ID: "<<unique_id[i]<<" of"<<" "<< INDIs[j][0] << " " << INDIs[j][1] << " must be unique."<<endl;
+              result<<"Error US22: Individual ID: "<<unique_id[i]<<" of"<<" "<< INDIs[i][0] << " " << INDIs[i][1] << " is conflicting with Individual ID:"
+		       <<unique_id[j]<<" of"<<" "<<INDIs[j][0] << " " << INDIs[j][1]<<endl;
 }
 
 checkFid()
@@ -449,7 +472,7 @@ checkFid()
 	for(int i = 0; i < size; i++)
       for(int j = i+1; j < size; j++)
         if(unique_fam[i] == unique_fam[j])
-           cout<<"Family ID: "<<unique_fam[i] << " must be unique";
+           cout<<"Error US22: Family ID- "<<unique_fam[i] << " is shared by two families";
            
     int arr_sizef1 = sizeof(unique_fam)/sizeof(unique_fam[0]);
 	int size1=0;
@@ -462,7 +485,7 @@ checkFid()
 	for(int i = 0; i < size1; i++)
       for(int j = i+1; j < size1; j++)
         if(unique_fam[i] == unique_fam[j])
-			result<<"Family Id:"<<unique_fam[i] <<"must be unique";
+			result<<"Error US22:Family Id-"<<unique_fam[i] <<"is shared by two families";
 }
 
 
