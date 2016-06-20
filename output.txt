@@ -85,7 +85,7 @@ Invalid tag
 2 _MARNM Ramos
 2
 Invalid tag
-1 SEX M
+1 SEX F
 1
 SEX
 1 BIRT
@@ -97,7 +97,7 @@ DATE
 1 FAMS @F1@
 1
 FAMS
-0 @I3@ INDI
+0 @I2@ INDI
 0
 INDI
 1 NAME Sally /Paz/
@@ -112,13 +112,13 @@ Invalid tag
 2 _MARNM Ramos
 2
 Invalid tag
-1 SEX F
+1 SEX M
 1
 SEX
 1 BIRT
 1
 BIRT
-2 DATE 10 MAY 1970
+2 DATE 7 AUG 1939
 2
 DATE
 1 FAMS @F1@
@@ -280,7 +280,7 @@ SEX
 1 BIRT
 1
 BIRT
-2 DATE 7 DEC 1964
+2 DATE 7 DEC 1963
 2
 DATE
 1 FAMS @F5@
@@ -292,10 +292,10 @@ FAMC
 0 @I9@ INDI
 0
 INDI
-1 NAME Ana /Tobar/
+1 NAME May /Tobar/
 1
 NAME
-2 GIVN Ana
+2 GIVN May
 2
 Invalid tag
 2 SURN Tobar
@@ -337,7 +337,7 @@ SEX
 1 BIRT
 1
 BIRT
-2 DATE 5 MAR 1990
+2 DATE 5 JAN 2011
 2
 DATE
 1 FAMC @F5@
@@ -364,7 +364,7 @@ SEX
 1 BIRT
 1
 BIRT
-2 DATE 26 JUL 1968
+2 DATE 10 AUG 1937
 2
 DATE
 1 FAMC @F2@
@@ -451,7 +451,7 @@ SEX
 1 BIRT
 1
 BIRT
-2 DATE 1 MAR 1914
+2 DATE 11 MAR 1914
 2
 DATE
 1 DEAT Y
@@ -472,12 +472,18 @@ FAM
 1 @I3@
 1
 @I3@
-1 CHIL @I1@
+1 @I1 
 1
-CHIL
-1 CHIL @I4@
+@I1 
+1 @I4 
 1
-CHIL
+@I4 
+1 MARR
+1
+MARR
+2 DATE 10 APR 1950
+2
+DATE
 1 _CURRENT Y
 1
 Invalid tag
@@ -490,15 +496,21 @@ FAM
 1 @I6@
 1
 @I6@
-1 CHIL @I3@
+1 @I3 
 1
-CHIL
-1 CHIL @I11@
+@I3 
+1 @I11 
 1
-CHIL
-1 CHIL @I12@
+@I11 
+1 @I12 
 1
-CHIL
+@I12 
+1 MARR
+1
+MARR
+2 DATE 10 AUG 1939
+2
+DATE
 1 _CURRENT Y
 1
 Invalid tag
@@ -511,9 +523,15 @@ FAM
 1 @I7@
 1
 @I7@
-1 CHIL @I8@
+1 @I8 
 1
-CHIL
+@I8 
+1 MARR
+1
+MARR
+2 DATE 1 JAN 1975
+2
+DATE
 1 _CURRENT N
 1
 Invalid tag
@@ -526,13 +544,19 @@ FAM
 1 @I14@
 1
 @I14@
-1 CHIL @I5@
+1 @I5 
 1
-CHIL
+@I5 
+1 MARR
+1
+MARR
+2 DATE 9 MAR 1914
+2
+DATE
 1 _CURRENT Y
 1
 Invalid tag
-0 @F5@ FAM
+0 @F4@ FAM
 0
 FAM
 1 @I8@
@@ -541,9 +565,15 @@ FAM
 1 @I9@
 1
 @I9@
-1 CHIL @I10@
+1 @I10 
 1
-CHIL
+@I10 
+1 MARR
+1
+MARR
+2 DATE 14 FEB 2011
+2
+DATE
 1 _CURRENT Y
 1
 Invalid tag
@@ -551,35 +581,88 @@ Invalid tag
 0
 TRLR
 
-========================== INDIs ============================
-@I1@: Clara Ramos
-@I2@: Tito Ramos
-@I3@: Sally Paz
-@I4@: Allison Ramos
-@I5@: David Paz
-@I6@: Netty Gregorio
-@I7@: Maria Rivera
-@I8@: Francis Paz
-@I9@: Ana Tobar
-@I10@: Jake Paz
-@I11@: Bonnie Paz
-@I12@: Bobby Paz
-@I13@: Eric Paz
-@I14@: Ana Intud
+========================== INDIs - Names -IDs- Gender============================
+@I1@: Clara Ramos   Gender:F
+@I2@: Tito Ramos   Gender:F
+@I2@: Sally Paz   Gender:M
+@I4@: Allison Ramos   Gender:F
+@I5@: David Paz   Gender:M
+@I6@: Netty Gregorio   Gender:F
+@I7@: Maria Rivera   Gender:F
+@I8@: Francis Paz   Gender:M
+@I9@: May Tobar   Gender:F
+@I10@: Jake Paz   Gender:M
+@I11@: Bonnie Paz   Gender:F
+@I12@: Bobby Paz   Gender:M
+@I13@: Eric Paz   Gender:M
+@I14@: Ana Intud   Gender:F
 
-========================== FAMs =============================
-Family ID:@F1@: 
-Husband ID:2
-Wife ID:3
-Family ID:@F2@: 
-Husband ID:5
-Wife ID:6
-Family ID:@F3@: 
-Husband ID:5
-Wife ID:7
-Family ID:@F4@: 
-Husband ID:1
-Wife ID:1
-Family ID:@F5@: 
-Husband ID:8
-Wife ID:9
+======== FAMs-IDs - IDs - Spouses' Names- Sex- US21- Correct gender for role ==============
+Family ID: @F1@: 
+Husband ID: @I2@
+Husband Name: Tito Ramos
+Husband Sex: F
+Wife ID: @I2@
+Wife Name: Sally Paz
+Wife Sex: M
+Family ID: @F2@: 
+Husband ID: @I5@
+Husband Name: David Paz
+Husband Sex: M
+Wife ID: @I6@
+Wife Name: Netty Gregorio
+Wife Sex: F
+Family ID: @F3@: 
+Husband ID: @I5@
+Husband Name: David Paz
+Husband Sex: M
+Wife ID: @I7@
+Wife Name: Maria Rivera
+Wife Sex: F
+Family ID: @F4@: 
+Husband ID: @I13@
+Husband Name: Eric Paz
+Husband Sex: M
+Wife ID: @I14@
+Wife Name: Ana Intud
+Wife Sex: F
+Family ID: @F4@: 
+Husband ID: @I8@
+Husband Name: Francis Paz
+Husband Sex: M
+Wife ID: @I9@
+Wife Name: May Tobar
+Wife Sex: F
+
+========================== US02 - Birth before Marriage =============================
+Error US02: Birth Date of Tito Ramos (@I2@) occurs after marriage date in Family @F1@.
+  Marriage Date: 10 APR 1950
+  Birth Date: 18 OCT 1965
+Error US02: Birth Date of David Paz (@I5@) occurs after marriage date in Family @F2@.
+  Marriage Date: 10 AUG 1939
+  Birth Date: 13 SEP 1939
+Error US02: Birth Date of Ana Intud (@I14@) occurs after marriage date in Family @F4@.
+  Marriage Date: 9 MAR 1914
+  Birth Date: 11 MAR 1914
+
+========================== US08 - Child born after Parents' Marriage =============================
+Anomaly US08: Birth Date of Sally Paz (@I2@) occurs before parents' marriage in Family @F2@.
+  Marriage Date: 10 AUG 1939
+  Birth Date: 7 AUG 1939
+Anomaly US08: Birth Date of Bonnie Paz (@I11@) occurs before parents' marriage in Family @F2@.
+  Marriage Date: 10 AUG 1939
+  Birth Date: 10 AUG 1937
+Anomaly US08: Birth Date of Francis Paz (@I8@) occurs before parents' marriage in Family @F3@.
+  Marriage Date: 1 JAN 1975
+  Birth Date: 7 DEC 1963
+Anomaly US08: Birth Date of Jake Paz (@I10@) occurs before parents' marriage in Family @F5@.
+  Marriage Date: 14 FEB 2011
+  Birth Date: 5 JAN 2011
+
+========================== US21 - Correct gender for role =============================
+Error US21-Correct gender for Tito Ramos having gender Female must be male as he is husband of Sally Paz
+Error US21-Correct gender for Sally Paz having gender Male must be female as she is wife of Tito Ramos
+
+========================== US22 - Unique ID for Individual and family =============================
+Error US22: Individual ID: @I2@ of Tito Ramos is conflicting with Individual ID: @I2@ of Sally Paz
+Error US22: Family Id @F4@ is shared by two families
