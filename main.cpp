@@ -249,64 +249,72 @@ int monthToInt(string m) {
 /* reads in a string in form of DAY MONTH YEAR
  * parses through the string and places the day, month, year into a char**
  */
-char** splitTheDate(string s) {
+char** splitTheDate(char* theDate) {
 	char** d = (char**)malloc(4*sizeof(char*));
-	char* theDate = &s[0];
-	char* splitDate = strtok(theDate, " /");
+	char* splitDate = strtok(theDate, " /\n");
 	d[0] = splitDate;
-	splitDate = strtok(NULL, " /");
+	splitDate = strtok(NULL, " /\n");
 	d[1] = splitDate;
-	splitDate = strtok(NULL, " /");
+	splitDate = strtok(NULL, " /\n");
 	d[2] = splitDate;
 	return d;
+}
+
+/* checks if firstDate is less than secondDate
+ */
+int compareDates(char** firstDate, char** secondDate) {
+	if(atoi(firstDate[2]) < atoi(secondDate[2])) {
+		return 1;
+	} else if(atoi(firstDate[2]) == atoi(secondDate[2]) && monthToInt(firstDate[1]) < monthToInt(secondDate[1])) {
+		return 2;
+	} else if(atoi(firstDate[2]) == atoi(secondDate[2]) && monthToInt(firstDate[1]) == monthToInt(secondDate[1]) && atoi(firstDate[0]) < atoi(secondDate[0])) {
+		return 3;
+	}
+	return 0;
 }
 
 /* US02: Birth before marriage
  * prints error message if INDI's birth date occurs after marriage
  */
 void bornBeforeMarriage() {
-	int j, k, day;
-	string current;
 	char** marriage = (char**)malloc(4*sizeof(char*));
-	char** indiv;
-	int id;
-	for(j = 1; j <= fam_it; j++) {
-		//split the marriage date to day, month, year
-		marriage = splitTheDate(FAMs[j][2]);
+	char** indiv = (char**)malloc(4*sizeof(char*));
+	int id, compareValue;
+	for(int j = 1; j <= fam_it; j++) {
+		char* marriageDate = (char*)malloc((FAMs[j][2].length()+1)*sizeof(char));
+		FAMs[j][2].copy(marriageDate, FAMs[j][2].length(), 0);
+		marriage = splitTheDate(marriageDate);
 
-		for(k = 0; k < 2; k++) {
-			//split the INDI's birth date to day, month, year
+		for(int k = 0; k < 2; k++) {
 			id = atoi(FAMs[j][k].c_str());
-			indiv = splitTheDate(INDIs[id][3]);
+			char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
+			INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
+			indiv = splitTheDate(indivDate);
 
-			//keeps track of day, because monthToInt overrides indiv[0]
-			day = atoi(indiv[0]);
-
-			//compare the years, then months, then days
-			if(atoi(marriage[2]) < atoi(indiv[2])) {
-				cout << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << "(" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << '\n';
-				cout << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << '\n';
-				cout << "  Birth Date: " << indiv[0] << " " << indiv[1] << " " << indiv[2] << '\n';
-
-				result << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << endl;
-				result << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << endl;
-				result << "  Birth Date: " << indiv[0] << " " << indiv[1] << " " << indiv[2] << endl;
-			} else if(atoi(marriage[2]) == atoi(indiv[2]) && monthToInt(marriage[1]) < monthToInt(indiv[1])) {
+			if((compareValue = compareDates(marriage, indiv)) == 1) {
 				cout << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << '\n';
-				cout << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << '\n';
-				cout << "  Birth Date: " << day << " " << indiv[1] << " " << indiv[2] << '\n';
+				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
+				cout << "  Birth Date:" << INDIs[id][3] << '\n';
 
 				result << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << endl;
-				result << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << endl;
-				result << "  Birth Date: " << day << " " << indiv[1] << " " << indiv[2] << endl;
-			} else if(atoi(marriage[2]) == atoi(indiv[2]) && monthToInt(marriage[1]) == monthToInt(indiv[1]) && atoi(marriage[0]) <= day) {
+				result << "  Marriage Date:" << FAMs[j][2] << endl;
+				result << "  Birth Date:" << INDIs[id][3] << endl;
+			} else if(compareValue == 2) {
 				cout << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << '\n';
-				cout << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << '\n';
-				cout << "  Birth Date: " << day << " " << indiv[1] << " " << indiv[2] << '\n';
+				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
+				cout << "  Birth Date:" << INDIs[id][3] << '\n';
 
 				result << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << endl;
-				result << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << endl;
-				result << "  Birth Date: " << day << " " << indiv[1] << " " << indiv[2] << endl;
+				result << "  Marriage Date:" << FAMs[j][2] << endl;
+				result << "  Birth Date:" << INDIs[id][3] << endl;
+			} else if(compareValue == 3) {
+				cout << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << '\n';
+				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
+				cout << "  Birth Date:" << INDIs[id][3] << '\n';
+
+				result << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << endl;
+				result << "  Marriage Date:" << FAMs[j][2] << endl;
+				result << "  Birth Date:" << INDIs[id][3] << endl;
 			}
 		}
 	}
@@ -319,48 +327,45 @@ void bornBeforeMarriage() {
  * prints anomaly message if otherwise
  */
 void childBornAfterMarriage() {
-	int j, k, day;
-	string current, month;
 	char** marriage = (char**)malloc(4*sizeof(char*));
-	char** indiv;
-	int id;
-	for(j = 1; j <= fam_it; j++) {
-		//split the marriage date to day, month, year
-		marriage = splitTheDate(FAMs[j][2]);
+	char** indiv = (char**)malloc(4*sizeof(char*));
+	int id, compareValue;
+	for(int j = 1; j <= fam_it; j++) {
+		char* marriageDate = (char*)malloc((FAMs[j][2].length()+1)*sizeof(char));
+		FAMs[j][2].copy(marriageDate, FAMs[j][2].length(), 0);
+		marriage = splitTheDate(marriageDate);
 
-		for(k = 5; k < 20 && FAMs[j][k] != "-1"; k++) {
-			//split the INDI's birth date to day, month, year
+		for(int k = 5; k < 20 && FAMs[j][k] != "-1"; k++) {
 			id = atoi(FAMs[j][k].c_str());
-			indiv = splitTheDate(INDIs[id][3]);
-			//keeps track of day, because monthToInt overrides indiv[0]
-			day = atoi(indiv[0]);
-			month = indiv[1];
+			char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
+			INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
+			indiv = splitTheDate(indivDate);
 
 			//compare the years, then months, then days
-			if(atoi(marriage[2]) > atoi(indiv[2])) {
+			if((compareValue = compareDates(indiv, marriage)) == 1) {
 				cout << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs before parents' marriage in Family @F" << j << "@." << '\n';
-				cout << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << '\n';
-				cout << "  Birth Date: " << indiv[0] << " " << indiv[1] << " " << indiv[2] << '\n';
+				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
+				cout << "  Birth Date:" << INDIs[id][3] << '\n';
 
 				result << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs before parents' marriage in Family @F" << j << "@." << endl;
-				result << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << endl;
-				result << "  Birth Date: " << indiv[0] << " " << indiv[1] << " " << indiv[2] << endl;
-			} else if(atoi(marriage[2]) == atoi(indiv[2]) && monthToInt(marriage[1]) > monthToInt(indiv[1])) {
+				result << "  Marriage Date:" << FAMs[j][2] << endl;
+				result << "  Birth Date:" << INDIs[id][3] << endl;
+			} else if(compareValue == 2) {
 				cout << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs before parents' marriage in Family @F" << j << "@." << '\n';
-				cout << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << '\n';
-				cout << "  Birth Date: " << day << " " << month << " " << indiv[2] << '\n';
+				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
+				cout << "  Birth Date:" << INDIs[id][3] << '\n';
 
 				result << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs before parents' marriage in Family @F" << j << "@." << endl;
-				result << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << endl;
-				result << "  Birth Date: " << day << " " << month << " " << indiv[2] << endl;
-			} else if(atoi(marriage[2]) == atoi(indiv[2]) && monthToInt(marriage[1]) == monthToInt(indiv[1]) && atoi(marriage[0]) >= day) {
+				result << "  Marriage Date:" << FAMs[j][2] << endl;
+				result << "  Birth Date:" << INDIs[id][3] << endl;
+			} else if(compareValue == 3) {
 				cout << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs before parents' marriage in Family @F" << j << "@." << '\n';
-				cout << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << '\n';
-				cout << "  Birth Date: " << day << " " << indiv[1] << " " << indiv[2] << '\n';
+				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
+				cout << "  Birth Date:" << INDIs[id][3] << '\n';
 
 				result << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs before parents' marriage in Family @F" << j << "@." << endl;
-				result << "  Marriage Date: " << marriage[0] << " " << marriage[1] << " " << marriage[2] << endl;
-				result << "  Birth Date: " << day << " " << indiv[1] << " " << indiv[2] << endl;
+				result << "  Marriage Date:" << FAMs[j][2] << endl;
+				result << "  Birth Date:" << INDIs[id][3] << endl;
 			}
 		}
 	}
