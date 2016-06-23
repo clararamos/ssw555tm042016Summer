@@ -373,6 +373,66 @@ void childBornAfterMarriage() {
 	free(indiv);
 }
 
+/* US09: Child Born after Parents' Marriage
+ * parses through all families and checks that all children are born before parent's death
+ * prints error message for mother and anomaly message for father if otherwise
+ */
+void childBornBeforeParentsDeath() {
+
+}
+
+/* US10: person marries at least 14 years of age
+ * parses through all families and checks that all married persons were at least 14 at date of marriage
+ * prints error message if otherwise
+ */
+void confirmMarriageAge() {
+	char** marriage = (char**)malloc(4*sizeof(char*));
+	char** indiv = (char**)malloc(4*sizeof(char*));
+	int id;
+	for(int j = 1; j <= fam_it; j++) {
+		char* marriageDate = (char*)malloc((FAMs[j][2].length()+1)*sizeof(char));
+		FAMs[j][2].copy(marriageDate, FAMs[j][2].length(), 0);
+		marriage = splitTheDate(marriageDate);
+
+		for(int k = 0; k < 2; k++) {
+			id = atoi(FAMs[j][k].c_str());
+			char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
+			INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
+			indiv = splitTheDate(indivDate);
+
+			if(compareDates(marriage, indiv) == 0) {
+				if((atoi(marriage[2]) - atoi(indiv[2])) < 14) {
+					cout << "Error US10: Age of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") in Family @F" << j << "@ at marriage is less than 14 years." << '\n';
+					cout << "  Marriage Date:" << FAMs[j][2] << '\n';
+					cout << "  Birth Date:" << INDIs[id][3] << '\n';
+
+					result << "Error US10: Age of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") in Family @F" << j << "@ at marriage is less than 14 years." << endl;
+					result << "  Marriage Date:" << FAMs[j][2] << endl;
+					result << "  Birth Date:" << INDIs[id][3] << endl;
+				} else if((atoi(marriage[2]) - atoi(indiv[2])) == 14 && monthToInt(marriage[1]) < monthToInt(indiv[1])) {
+					cout << "Error US10: Age of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") in Family @F" << j << "@ at marriage is less than 14 years." << '\n';
+					cout << "  Marriage Date:" << FAMs[j][2] << '\n';
+					cout << "  Birth Date:" << INDIs[id][3] << '\n';
+
+					result << "Error US10: Age of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") in Family @F" << j << "@ at marriage is less than 14 years." << endl;
+					result << "  Marriage Date:" << FAMs[j][2] << endl;
+					result << "  Birth Date:" << INDIs[id][3] << endl;
+				} else if((atoi(marriage[2]) - atoi(indiv[2])) == 14 && monthToInt(marriage[1]) == monthToInt(indiv[1]) && atoi(marriage[0]) < atoi(indiv[0])) {
+					cout << "Error US10: Age of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") in Family @F" << j << "@ at marriage is less than 14 years." << '\n';
+					cout << "  Marriage Date:" << FAMs[j][2] << '\n';
+					cout << "  Birth Date:" << INDIs[id][3] << '\n';
+
+					result << "Error US10: Age of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") in Family @F" << j << "@ at marriage is less than 14 years." << endl;
+					result << "  Marriage Date:" << FAMs[j][2] << endl;
+					result << "  Birth Date:" << INDIs[id][3] << endl;
+				}
+			}
+		}
+	}
+	free(marriage);
+	free(indiv);
+}
+
 void checkGender()
 {
 	int j;
@@ -589,10 +649,20 @@ int main(int argc, char* argv[])
 	result << '\n' << "========================== US02 - Birth before Marriage =============================" << endl;
 	bornBeforeMarriage();
 
-	//print anyone who was born before parents' marriage or after parents' divorce
-	cout << '\n' << "========================== US08 - Child born after Parents' Marriage =============================" << '\n';
-	result << '\n' << "========================== US08 - Child born after Parents' Marriage =============================" << endl;
+	//print anyone who was born before parents' marriage
+	cout << '\n' << "========================== US08 - Child born before Parents' Marriage =============================" << '\n';
+	result << '\n' << "========================== US08 - Child born before Parents' Marriage =============================" << endl;
 	childBornAfterMarriage();
+
+	//print anyone who was born after parent's death
+	cout << '\n' << "========================== US09 - Child born after Parent's Death =============================" << '\n';
+	result << '\n' << "========================== US09 - Child born after Parent's Death =============================" << endl;
+	childBornBeforeParentsDeath();
+
+	//print anyone who was less than 14 at date of marriage
+	cout << '\n' << "========================== US10 - At Least 14 at Marriage =============================" << '\n';
+	result << '\n' << "========================== US10 - At Least 14 at Marriage =============================" << endl;
+	confirmMarriageAge();
 
 	// print husband having gender female and wife having gender male in family
 	cout << '\n' << "========================== US21 - Correct gender for role =============================" << '\n';
