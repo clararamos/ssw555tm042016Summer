@@ -111,6 +111,7 @@ int foundAZero() {
 				fam = true;
 				fam_it++;
 				child_it = 5;
+				FAMs[fam_it][3] = "-1";
 				for(int k = 5; k < 20; k++) {
 					FAMs[fam_it][k] = "-1";
 				}
@@ -340,6 +341,43 @@ void childBornAfterMarriage() {
 		}
 	}
 	free(marriage);
+	free(indiv);
+}
+
+/* US08: Child Born after Parents' Marriage (and before divorce)
+ * parses through all families and checks that all children are born before divorce, if applicable
+ * prints anomaly message if otherwise
+ */
+void childBornBeforeDivorce() {
+	char** divorce = (char**)malloc(4*sizeof(char*));
+	char** indiv = (char**)malloc(4*sizeof(char*));
+	int id;
+	for(int j = 1; j <= fam_it; j++) {
+		if(FAMs[j][3] != "-1") {
+			char* divorceDate = (char*)malloc((FAMs[j][3].length()+1)*sizeof(char));
+			FAMs[j][3].copy(divorceDate, FAMs[j][3].length(), 0);
+			divorce = splitTheDate(divorceDate);
+
+			for(int k = 5; k < 20 && FAMs[j][k] != "-1"; k++) {
+				id = atoi(FAMs[j][k].c_str());
+				char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
+				INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
+				indiv = splitTheDate(indivDate);
+
+				//compare the years, then months, then days
+				if(compareDates(divorce, indiv) >= 1) {
+					cout << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after parents' divorce in Family @F" << j << "@." << '\n';
+					cout << "  Divorce Date:" << FAMs[j][2] << '\n';
+					cout << "  Birth Date:" << INDIs[id][3] << '\n';
+
+					result << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after parents' divorce in Family @F" << j << "@." << endl;
+					result << "  Divorce Date:" << FAMs[j][2] << endl;
+					result << "  Birth Date:" << INDIs[id][3] << endl;
+				}
+			}
+		}
+	}
+	free(divorce);
 	free(indiv);
 }
 
@@ -659,9 +697,10 @@ int main(int argc, char* argv[]) {
 	bornBeforeMarriage();
 
 	//print anyone who was born before parents' marriage
-	cout << '\n' << "========================== US08 - Child born before Parents' Marriage =============================" << '\n';
-	result << '\n' << "========================== US08 - Child born before Parents' Marriage =============================" << endl;
+	cout << '\n' << "========================== US08 - Child born before Parents' Marriage or after Divorce =============================" << '\n';
+	result << '\n' << "========================== US08 - Child born before Parents' Marriage or after Divorce =============================" << endl;
 	childBornAfterMarriage();
+	childBornBeforeDivorce();
 
 	//print anyone who was born after parent's death
 	cout << '\n' << "========================== US09 - Child born after Parent's Death =============================" << '\n';
