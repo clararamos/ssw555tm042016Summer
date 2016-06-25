@@ -1,5 +1,5 @@
 /* CS 555 WS
- * Project 04 - GEDCOM parser : Sprint 1
+ * Project 06 - GEDCOM parser : Sprint 2
  * Clara Ramos, Larisa Machado, Varun Kumar
  * We pledge our honor that we have abided by the Stevens Honor System.
  */
@@ -106,6 +106,7 @@ int foundAZero() {
 			if(data == "INDI") {
 				indiv = true;
 				indiv_it++;
+				INDIs[indiv_it][4] = "-1";
 			} else if (data == "FAM") {
 				fam = true;
 				fam_it++;
@@ -261,6 +262,7 @@ char** splitTheDate(char* theDate) {
 }
 
 /* checks if firstDate is less than secondDate
+ * if firstDate is greater than secondDate, return 0
  */
 int compareDates(char** firstDate, char** secondDate) {
 	if(atoi(firstDate[2]) < atoi(secondDate[2])) {
@@ -279,7 +281,7 @@ int compareDates(char** firstDate, char** secondDate) {
 void bornBeforeMarriage() {
 	char** marriage = (char**)malloc(4*sizeof(char*));
 	char** indiv = (char**)malloc(4*sizeof(char*));
-	int id, compareValue;
+	int id;
 	for(int j = 1; j <= fam_it; j++) {
 		char* marriageDate = (char*)malloc((FAMs[j][2].length()+1)*sizeof(char));
 		FAMs[j][2].copy(marriageDate, FAMs[j][2].length(), 0);
@@ -291,23 +293,7 @@ void bornBeforeMarriage() {
 			INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
 			indiv = splitTheDate(indivDate);
 
-			if((compareValue = compareDates(marriage, indiv)) == 1) {
-				cout << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << '\n';
-				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
-				cout << "  Birth Date:" << INDIs[id][3] << '\n';
-
-				result << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << endl;
-				result << "  Marriage Date:" << FAMs[j][2] << endl;
-				result << "  Birth Date:" << INDIs[id][3] << endl;
-			} else if(compareValue == 2) {
-				cout << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << '\n';
-				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
-				cout << "  Birth Date:" << INDIs[id][3] << '\n';
-
-				result << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << endl;
-				result << "  Marriage Date:" << FAMs[j][2] << endl;
-				result << "  Birth Date:" << INDIs[id][3] << endl;
-			} else if(compareValue == 3) {
+			if(compareDates(marriage, indiv) >= 1) {
 				cout << "Error US02: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after marriage date in Family @F" << j << "@." << '\n';
 				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
 				cout << "  Birth Date:" << INDIs[id][3] << '\n';
@@ -329,7 +315,7 @@ void bornBeforeMarriage() {
 void childBornAfterMarriage() {
 	char** marriage = (char**)malloc(4*sizeof(char*));
 	char** indiv = (char**)malloc(4*sizeof(char*));
-	int id, compareValue;
+	int id;
 	for(int j = 1; j <= fam_it; j++) {
 		char* marriageDate = (char*)malloc((FAMs[j][2].length()+1)*sizeof(char));
 		FAMs[j][2].copy(marriageDate, FAMs[j][2].length(), 0);
@@ -342,23 +328,7 @@ void childBornAfterMarriage() {
 			indiv = splitTheDate(indivDate);
 
 			//compare the years, then months, then days
-			if((compareValue = compareDates(indiv, marriage)) == 1) {
-				cout << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs before parents' marriage in Family @F" << j << "@." << '\n';
-				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
-				cout << "  Birth Date:" << INDIs[id][3] << '\n';
-
-				result << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs before parents' marriage in Family @F" << j << "@." << endl;
-				result << "  Marriage Date:" << FAMs[j][2] << endl;
-				result << "  Birth Date:" << INDIs[id][3] << endl;
-			} else if(compareValue == 2) {
-				cout << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs before parents' marriage in Family @F" << j << "@." << '\n';
-				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
-				cout << "  Birth Date:" << INDIs[id][3] << '\n';
-
-				result << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs before parents' marriage in Family @F" << j << "@." << endl;
-				result << "  Marriage Date:" << FAMs[j][2] << endl;
-				result << "  Birth Date:" << INDIs[id][3] << endl;
-			} else if(compareValue == 3) {
+			if(compareDates(indiv, marriage) >= 1) {
 				cout << "Anomaly US08: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs before parents' marriage in Family @F" << j << "@." << '\n';
 				cout << "  Marriage Date:" << FAMs[j][2] << '\n';
 				cout << "  Birth Date:" << INDIs[id][3] << '\n';
@@ -378,7 +348,46 @@ void childBornAfterMarriage() {
  * prints error message for mother and anomaly message for father if otherwise
  */
 void childBornBeforeParentsDeath() {
+	char** death = (char**)malloc(4*sizeof(char*));
+	char** indiv = (char**)malloc(4*sizeof(char*));
+	int id, idP;
+	string message = "Error";
+	for(int j = 1; j <= fam_it; j++) { //parse through families
+		for(int i = 0; i < 2; i++) { //parse through parents + collect death data
+			idP = atoi(FAMs[j][i].c_str());
+			if(i == 0) {
+				message = "Anomaly"; //anomaly for father
+			} else {
+				message = "Error"; //error for mother
+			}
 
+			if(INDIs[idP][4] != "-1") {
+				char* deathDate = (char*)malloc((INDIs[idP][4].length()+1)*sizeof(char));
+				INDIs[idP][4].copy(deathDate, INDIs[idP][4].length(), 0);
+				death = splitTheDate(deathDate);
+
+				for(int k = 5; k < 20 && FAMs[j][k] != "-1"; k++) { //if parent is dead, parse through kid data
+					id = atoi(FAMs[j][k].c_str());
+					char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
+					INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
+					indiv = splitTheDate(indivDate);
+
+					//compare the years, then months, then days
+					if(compareDates(death, indiv) >= 1) {
+						cout << message << " US09: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after parent's (" << unique_id[idP] << ") death in Family @F" << j << "@." << '\n';
+						cout << "  Death Date:" << INDIs[idP][4] << '\n';
+						cout << "  Birth Date:" << INDIs[id][3] << '\n';
+
+						result << message << " US09: Birth Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after parent's (" << unique_id[idP] << ") death in Family @F" << j << "@." << endl;
+						result << "  Death Date:" << INDIs[idP][4] << endl;
+						result << "  Birth Date:" << INDIs[id][3] << endl;
+					}
+				}
+			}
+		}
+	}
+	free(death);
+	free(indiv);
 }
 
 /* US10: person marries at least 14 years of age
@@ -562,8 +571,9 @@ void checkFid()
  * reads the level of each line and runs appropriate function
  * if unrecognized, prints error message and terminates program
  */
-int main(int argc, char* argv[])
- {
+int main(int argc, char* argv[]) {
+	//takes GEDCOM file as command line input
+	//if no CLI given, default to GEDCOM_test.ged
 	string num;
 	int j;
 	const char* def = "GEDCOM_test.ged";
@@ -643,7 +653,6 @@ int main(int argc, char* argv[])
 
 	}
 
-
 	//print anyone who was married before their birthdate
 	cout << '\n' << "========================== US02 - Birth before Marriage =============================" << '\n';
 	result << '\n' << "========================== US02 - Birth before Marriage =============================" << endl;
@@ -673,7 +682,6 @@ int main(int argc, char* argv[])
 	result << '\n' << "========================== US22 - Unique ID for Individual and family =============================" << endl;
 	checkID();
 	checkFid();
-
 
 	test.close();
 	result.close();
