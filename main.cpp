@@ -199,7 +199,6 @@ int foundATwo() {
 	if(data == "DATE") {
 		tag = data;
 		restOfLine();
-		data.erase (data.end()-1);
 		if(date == "BIRT") {
 			INDIs[indiv_it][3] = data;
 		} else if(date == "DEAT") {
@@ -651,10 +650,10 @@ int main(int argc, char* argv[]) {
 	for(j = 1; j <= indiv_it; j++)
 	{
 		cout << unique_id[j] << ": ";
-		cout << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"Gender:"<< INDIs[j][2] << '\n';
+		cout << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"Gender:"<< INDIs[j][2] << "\n  Birthday:" << INDIs[j][3] << '\n';
 
 		result << unique_id[j] << ": ";
-		result << INDIs[j][0] << " " << INDIs[j][1] <<"   "<<"Gender:"<< INDIs[j][2] <<endl;
+		result << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"Gender:"<< INDIs[j][2] << "\n  Birthday:" << INDIs[j][3] << endl;
 	}
 
 	//print the family IDs as well as names and IDs of all husbands and wives
