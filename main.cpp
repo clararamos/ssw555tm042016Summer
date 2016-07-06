@@ -138,7 +138,7 @@ int foundAZero() {
  */
 int foundAOne() {
 	test >> data;
-
+		
 	if(data == "HUSB" || data == "WIFE" || data == "CHIL") {
 		if (data == "HUSB" && fam == true ) {
 		test >> data;
@@ -155,7 +155,7 @@ int foundAOne() {
 		temp.erase(temp.begin()-1);
 		temp.erase (temp.end()-1);
 		FAMs[fam_it][1] = temp;
-		}
+		} 
 		else if(data == "CHIL" && fam == true) {
 			test >> data;
 			char* childID = &data[0];
@@ -191,7 +191,7 @@ int foundAOne() {
 	} else if (data == "FAMS"){
 		tag = data;
 		restOfLine();
-		INDIs[indiv_it][6] = data[3];
+		INDIs[indiv_it][6] = data[3];	
 	} else if(data == "BIRT" || data == "MARR" || data == "DIV" || data == "DEAT") {
 		date = data;
 		tag = data;
@@ -620,7 +620,7 @@ void checkFid()
 
 //
 struct Date {int d, m, y;};
-
+ 
 const int monthDays[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 int countLeapYears(Date d)
@@ -630,7 +630,7 @@ int countLeapYears(Date d)
         years--;
     return years / 4 - years / 100 + years / 400;
 }
-
+ 
 int getDifference(Date dt1, Date dt2)
 {
     long int n1 = dt1.y*365 + dt1.d;
@@ -647,7 +647,7 @@ int getDifference(Date dt1, Date dt2)
 
 void recentDeaths()
 {
-
+	
 	// System current date
 	time_t currentTime;
   	struct tm *localTime;
@@ -658,17 +658,17 @@ void recentDeaths()
   	int Day    = localTime->tm_mday;
   	int Month  = localTime->tm_mon + 1;
  	int Year   = localTime->tm_year + 1900;
-
+	
 	Date currentdt = {Day, Month, Year};
 
-
+	
 	for(int j = 1; j <= indiv_it; j++)
 	{
-
+		
 		if(INDIs[j][4]!="-1")
 		{
 		string date = INDIs[j][4];
-
+		
 		string arr[4];
     	int i = 0;
     	stringstream ssin(date);
@@ -676,21 +676,21 @@ void recentDeaths()
         ssin >> arr[i];
         ++i;
         }
-
+		
   		int d    =atoi(arr[0].c_str()) ;
   		int mt  = monthToInt(arr[1]);
  		int yr   = atoi(arr[2].c_str());
   		Date deathdt = {d,mt,yr};
-
+		
 		if(getDifference(deathdt,currentdt)<=30 )
 		{
-
+	
 			cout << "Death date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][4] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
 			result<<"Death date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][4] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
 		}
-
-		}
-	}
+			
+		}		
+	}	
 }
 
 void recentSurvivors()
@@ -704,10 +704,10 @@ void recentSurvivors()
   	int Day    = localTime->tm_mday;
   	int Month  = localTime->tm_mon + 1;
  	int Year   = localTime->tm_year + 1900;
-
+	
 	Date currentdt = {Day, Month, Year};
 
-
+	
 	for(int j = 1; j <= indiv_it; j++)
 	{
 		if(INDIs[j][4]!="-1")
@@ -720,56 +720,104 @@ void recentSurvivors()
         ssin >> arr[i];
         ++i;
         }
-
+		
   		int d    =atoi(arr[0].c_str()) ;
   		int mt  = monthToInt(arr[1]);
  		int yr   = atoi(arr[2].c_str());
   		Date deathdt = {d,mt,yr};
-
+		
 		if(getDifference(deathdt,currentdt)<=30 )
 		{
-
+			
 			cout << "Recent death of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"on"<< INDIs[j][4] <<" with family id : " <<unique_fam[j-1] <<" and family members:";
 			result<< "Recent death of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"on"<< INDIs[j][4] <<" with family id : " <<unique_fam[j-1] <<" and family members:";
 			if (INDIs[j][2] == "M")
 			{
 				string fam_id = INDIs[j][6];
-				if (INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][4] == "-1")
+				if (INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][4] == "-1") 
 				{
 					cout << "Wife Name : " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][0] << " " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][1]  << '\n';
 					result<<"Wife Name : " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][0] << " " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][1]  << '\n';
 				}
 				if (INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][4] == "-1") {
 					cout << "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';
-					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';
+					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';			
 				}
 				if (INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][4] == "-1") {
 					cout << "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';
-					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';
+					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';			
 				}
 			}
 			else if (INDIs[j][2] == "F")
 			{
 				string fam_id = INDIs[j][6];
-				if (INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][4] == "-1")
+				if (INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][4] == "-1") 
 				{
 					cout << "Wife Name : " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][0].c_str())][0] << " " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][0].c_str())][1]  << '\n';
 					result<<"Wife Name : " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][0].c_str())][0] << " " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][0].c_str())][1]  << '\n';
 				}
 				if (INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][4] == "-1") {
 					cout << "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';
-					result<<"Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';
+					result<<"Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';			
 				}
 				if (INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][4] == "-1") {
 					cout << "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';
-					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';
+					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';			
 				}
 			}
-
+			
 		}
+			
+	  }		
+	}	
+}
 
-	  }
+void recentBirths()
+{
+	time_t currentTime;
+  	struct tm *localTime;
+
+  	time( &currentTime );                   // Get the current time
+  	localTime = localtime( &currentTime );  // Convert the current time to the local time
+
+  	int Day    = localTime->tm_mday;
+  	int Month  = localTime->tm_mon + 1;
+ 	int Year   = localTime->tm_year + 1900;
+	
+	Date currentdt = {Day, Month, Year};
+
+	
+	for(int j = 1; j <= indiv_it; j++)
+	{
+		
+		if(INDIs[j][3]!="-1")
+		{
+		string date = INDIs[j][3];
+		
+		string arr[3];
+    	int i = 0;
+    	stringstream ssin(date);
+    	while (ssin.good() && i < 4){
+        ssin >> arr[i];
+        ++i;
+        }
+		
+  		int d    =atoi(arr[0].c_str()) ;
+  		int mt  = monthToInt(arr[1]);
+ 		int yr   = atoi(arr[2].c_str());
+  		Date birthdt = {d,mt,yr};
+  		
+			
+		if((getDifference(birthdt,currentdt)<=30 )&& (getDifference(birthdt,currentdt)>0 ))
+		{
+			
+			cout << "Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][3] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
+			result<<"Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][3] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
+		}
+	
+		}		
 	}
+	
 }
 
 
@@ -892,16 +940,19 @@ int main(int argc, char* argv[]) {
 	result << '\n' << "========================== US22 - Unique ID for Individual and family =============================" << endl<<endl;
 	checkID();
 	checkFid();
-
+	
 	cout << '\n' << "========================== US36 -List of Recent deaths in last 30 days =============================" << '\n'<<'\n';
 	result << '\n' << "========================== US36 - Recent deaths in last 30 days =============================" << endl<<endl;
 	recentDeaths();
-
+	
 	cout<<'\n'<<"========================== US37 - List of recent Survivors ============================="<<'\n'<<'\n';
 	result<<'\n'<<"========================== US37 - List of recent Survivors ============================="<<'\n'<<'\n';
 	recentSurvivors();
-
-
+	
+	cout<<'\n'<<"========================== US35 - List of recent Births ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US35 - List of recent Births ============================="<<'\n'<<'\n';
+	recentBirths();
+	
 
 	test.close();
 	result.close();
