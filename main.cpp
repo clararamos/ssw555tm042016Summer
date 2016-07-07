@@ -516,10 +516,10 @@ void confirmMarriageAge() {
  * prints error message if otherwise
  */
 void parentsTooOld() {
-	//TODO
+	//TODO: fix the difference
 	char** birth = (char**)malloc(4*sizeof(char*));
 	char** indiv = (char**)malloc(4*sizeof(char*));
-	int id, idP, limit;
+	int id, idP, limit, diff;
 	for(int j = 1; j <= fam_it; j++) { //parse through families
 		for(int i = 0; i < 2; i++) { //parse through parents + collect birth data
 			if(i == 0) {
@@ -528,18 +528,41 @@ void parentsTooOld() {
 				limit = 60;
 			}
 			idP = atoi(FAMs[j][i].c_str());
-			char* birthDate = (char*)malloc((INDIs[idP][4].length()+1)*sizeof(char));
-			INDIs[idP][4].copy(birthDate, INDIs[idP][4].length(), 0);
+			char* birthDate = (char*)malloc((INDIs[idP][3].length()+1)*sizeof(char));
+			INDIs[idP][3].copy(birthDate, INDIs[idP][3].length(), 0);
 			birth = splitTheDate(birthDate);
+
+			for(int k = 5; k < 20 && FAMs[j][k] != "-1"; k++) { //parse through the kids, if applicable
+				id = atoi(FAMs[j][k].c_str());
+				char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
+				INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
+				indiv = splitTheDate(indivDate);
+
+				diff = atoi(indiv[2]) - atoi(birth[2]);
+				if(monthToInt(birth[1]) > monthToInt(indiv[1]) || (monthToInt(birth[1]) == monthToInt(indiv[1]) && atoi(birth[0]) > atoi(indiv[0]))) {
+					diff--;
+				}
+
+				if(diff >= limit) {
+					cout << "Error US12: " << INDIs[idP][0] << " " << INDIs[idP][1] << " (" << unique_id[idP] << ") ";
+					cout << "has an age difference of " << limit << " years or older with child " << INDIs[id][0] << " " << INDIs[id][1];
+					cout << " (" << unique_id[id] << ") in Family " << unique_fam[j] << '\n';
+
+					result << "Error US12: " << INDIs[idP][0] << " " << INDIs[idP][1] << " (" << unique_id[idP] << ") ";
+					result << "has an age difference of " << limit << " years or older with child " << INDIs[id][0] << " " << INDIs[id][1];
+					result << " (" << unique_id[id] << ") in Family " << unique_fam[j] << endl;
+				}
+			}
 		}
 	}
+	free(birth);
+	free(indiv);
 }
 
 /* US27: List Individual Ages
  * prints current date and all INDIs and their current age
  */
 void listCurrentAge() {
-	//TODO
 	char** indiv = (char**)malloc(4*sizeof(char*));
 	Date dt = getCurrentDate();
 	int age;
