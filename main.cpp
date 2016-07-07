@@ -56,6 +56,9 @@ string INDIs[5000][7];
  */
 string FAMs[1000][20];
 
+struct Date {int d, m, y;};
+
+const int monthDays[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 /* Takes in the line's current level
  * prints the level to output and output.txt
@@ -69,11 +72,11 @@ void printLevel(string s) {
 
 //prints what's currently in data and the rest of the line
 void restOfLine() {
-	cout << data;
-	result << data;
+	//cout << data;
+	//result << data;
 	getline(test, data);
-	cout << data << '\n';
-	result << data << endl;
+	//cout << data << '\n';
+	//result << data << endl;
 }
 
 /* Current line's level is 0
@@ -85,10 +88,10 @@ int foundAZero() {
 	if(data == "HEAD" || data == "TRLR" || data == "NOTE") {
 		indiv = false;
 		tag = data;
-		cout << data << '\n';
-		result << data << endl;
+		//cout << data << '\n';
+		//result << data << endl;
 	} else if(data[0] == '@') {
-		cout << data << " ";
+		//cout << data << " ";
 		if(data[1]== 'I')
 		{
 			u_id++;
@@ -100,7 +103,7 @@ int foundAZero() {
 			unique_fam[u_fam]=data;
 
 		}
-		result << data << " ";
+		//result << data << " ";
 		test >> data;
 
 		//flags when line describes a FAM or INDI
@@ -119,8 +122,8 @@ int foundAZero() {
 				}
 			}
 			tag = data;
-			cout << data << '\n';
-			result << data << endl;
+			//cout << data << '\n';
+			//result << data << endl;
 		} else {
 			indiv = false;
 			restOfLine();
@@ -138,24 +141,24 @@ int foundAZero() {
  */
 int foundAOne() {
 	test >> data;
-		
+
 	if(data == "HUSB" || data == "WIFE" || data == "CHIL") {
 		if (data == "HUSB" && fam == true ) {
-		test >> data;
-		string temp = data;
-		temp.erase (temp.begin()-1);
-		temp.erase(temp.begin()-1);
-		temp.erase (temp.end()-1);
-		FAMs[fam_it][0] = temp;
+			test >> data;
+			string temp = data;
+			temp.erase (temp.begin()-1);
+			temp.erase(temp.begin()-1);
+			temp.erase (temp.end()-1);
+			FAMs[fam_it][0] = temp;
 		}
 		else if (data == "WIFE" && fam == true) {
-		test >> data;
-		string temp = data;
-		temp.erase (temp.begin()-1);
-		temp.erase(temp.begin()-1);
-		temp.erase (temp.end()-1);
-		FAMs[fam_it][1] = temp;
-		} 
+			test >> data;
+			string temp = data;
+			temp.erase (temp.begin()-1);
+			temp.erase(temp.begin()-1);
+			temp.erase (temp.end()-1);
+			FAMs[fam_it][1] = temp;
+		}
 		else if(data == "CHIL" && fam == true) {
 			test >> data;
 			char* childID = &data[0];
@@ -191,7 +194,7 @@ int foundAOne() {
 	} else if (data == "FAMS"){
 		tag = data;
 		restOfLine();
-		INDIs[indiv_it][6] = data[3];	
+		INDIs[indiv_it][6] = data[3];
 	} else if(data == "BIRT" || data == "MARR" || data == "DIV" || data == "DEAT") {
 		date = data;
 		tag = data;
@@ -287,6 +290,20 @@ int compareDates(char** firstDate, char** secondDate) {
 		return 3;
 	}
 	return 0;
+}
+
+Date getCurrentDate() {
+	time_t currentTime;
+	struct tm *localTime;
+
+	time( &currentTime );                   // Get the current time
+	localTime = localtime( &currentTime );  // Convert the current time to the local time
+
+	int Day    = localTime->tm_mday;
+	int Month  = localTime->tm_mon + 1;
+	int Year   = localTime->tm_year + 1900;
+	Date currentdt = {Day, Month, Year};
+	return currentdt;
 }
 
 /* US02: Birth before marriage
@@ -493,6 +510,62 @@ void confirmMarriageAge() {
 	free(indiv);
 }
 
+/* US12: Parents not too old
+ * parses through all families and checks that parents are not too old
+ * mom should be <60 yrs older; dad should be <80 yrs older
+ * prints error message if otherwise
+ */
+void parentsTooOld() {
+	//TODO
+	char** birth = (char**)malloc(4*sizeof(char*));
+	char** indiv = (char**)malloc(4*sizeof(char*));
+	int id, idP, limit;
+	for(int j = 1; j <= fam_it; j++) { //parse through families
+		for(int i = 0; i < 2; i++) { //parse through parents + collect birth data
+			if(i == 0) {
+				limit = 80;
+			} else {
+				limit = 60;
+			}
+			idP = atoi(FAMs[j][i].c_str());
+			char* birthDate = (char*)malloc((INDIs[idP][4].length()+1)*sizeof(char));
+			INDIs[idP][4].copy(birthDate, INDIs[idP][4].length(), 0);
+			birth = splitTheDate(birthDate);
+		}
+	}
+}
+
+/* US27: List Individual Ages
+ * prints current date and all INDIs and their current age
+ */
+void listCurrentAge() {
+	//TODO
+	char** indiv = (char**)malloc(4*sizeof(char*));
+	Date dt = getCurrentDate();
+	int age;
+	cout << "Current Date: " << dt.m << "/" << dt.d << "/" << dt.y << '\n';
+	result << "Current Date: " << dt.m << "/" << dt.d << "/" << dt.y << '\n';
+
+	for(int j = 1; j <= indiv_it; j++) {
+		if(INDIs[j][4] == "-1") {
+			char* indivDate = (char*)malloc((INDIs[j][3].length()+1)*sizeof(char));
+			INDIs[j][3].copy(indivDate, INDIs[j][3].length(), 0);
+			indiv = splitTheDate(indivDate);
+			Date indiBirth = {atoi(indiv[0]), monthToInt(indiv[1]), atoi(indiv[2])};
+
+			age = dt.y - indiBirth.y;
+			if(dt.m < indiBirth.m || (dt.m == indiBirth.m && dt.d < indiBirth.d)) {
+				age--;
+			}
+
+			cout << unique_id[j] << ": " << INDIs[j][0] << " " << INDIs[j][1] << '\n';
+			cout << "  Current Age: " << age << '\n';
+			result << unique_id[j] << ": " << INDIs[j][0] << " " << INDIs[j][1] << endl;
+			result << "  Current Age: " << age << endl;
+		}
+	}
+}
+
 void checkGender()
 {
 	int j;
@@ -617,12 +690,6 @@ void checkFid()
 			result<<"Error US22: Family Id "<<unique_fam[i] <<" is shared by two families"<<endl;
 }
 
-
-//
-struct Date {int d, m, y;};
- 
-const int monthDays[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
 int countLeapYears(Date d)
 {
     int years = d.y;
@@ -630,7 +697,7 @@ int countLeapYears(Date d)
         years--;
     return years / 4 - years / 100 + years / 400;
 }
- 
+
 int getDifference(Date dt1, Date dt2)
 {
     long int n1 = dt1.y*365 + dt1.d;
@@ -647,7 +714,6 @@ int getDifference(Date dt1, Date dt2)
 
 void recentDeaths()
 {
-	
 	// System current date
 	time_t currentTime;
   	struct tm *localTime;
@@ -658,17 +724,15 @@ void recentDeaths()
   	int Day    = localTime->tm_mday;
   	int Month  = localTime->tm_mon + 1;
  	int Year   = localTime->tm_year + 1900;
-	
+
 	Date currentdt = {Day, Month, Year};
 
-	
 	for(int j = 1; j <= indiv_it; j++)
 	{
-		
 		if(INDIs[j][4]!="-1")
 		{
 		string date = INDIs[j][4];
-		
+
 		string arr[4];
     	int i = 0;
     	stringstream ssin(date);
@@ -676,21 +740,20 @@ void recentDeaths()
         ssin >> arr[i];
         ++i;
         }
-		
+
   		int d    =atoi(arr[0].c_str()) ;
   		int mt  = monthToInt(arr[1]);
  		int yr   = atoi(arr[2].c_str());
   		Date deathdt = {d,mt,yr};
-		
+
 		if(getDifference(deathdt,currentdt)<=30 )
 		{
-	
+
 			cout << "Death date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][4] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
 			result<<"Death date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][4] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
 		}
-			
-		}		
-	}	
+		}
+	}
 }
 
 void recentSurvivors()
@@ -704,10 +767,10 @@ void recentSurvivors()
   	int Day    = localTime->tm_mday;
   	int Month  = localTime->tm_mon + 1;
  	int Year   = localTime->tm_year + 1900;
-	
+
 	Date currentdt = {Day, Month, Year};
 
-	
+
 	for(int j = 1; j <= indiv_it; j++)
 	{
 		if(INDIs[j][4]!="-1")
@@ -720,56 +783,54 @@ void recentSurvivors()
         ssin >> arr[i];
         ++i;
         }
-		
+
   		int d    =atoi(arr[0].c_str()) ;
   		int mt  = monthToInt(arr[1]);
  		int yr   = atoi(arr[2].c_str());
   		Date deathdt = {d,mt,yr};
-		
+
 		if(getDifference(deathdt,currentdt)<=30 )
 		{
-			
+
 			cout << "Recent death of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"on"<< INDIs[j][4] <<" with family id : " <<unique_fam[j-1] <<" and family members:";
 			result<< "Recent death of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"on"<< INDIs[j][4] <<" with family id : " <<unique_fam[j-1] <<" and family members:";
 			if (INDIs[j][2] == "M")
 			{
 				string fam_id = INDIs[j][6];
-				if (INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][4] == "-1") 
+				if (INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][4] == "-1")
 				{
 					cout << "Wife Name : " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][0] << " " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][1]  << '\n';
 					result<<"Wife Name : " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][0] << " " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][1]  << '\n';
 				}
 				if (INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][4] == "-1") {
 					cout << "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';
-					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';			
+					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';
 				}
 				if (INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][4] == "-1") {
 					cout << "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';
-					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';			
+					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';
 				}
 			}
 			else if (INDIs[j][2] == "F")
 			{
 				string fam_id = INDIs[j][6];
-				if (INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][4] == "-1") 
+				if (INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][1].c_str())][4] == "-1")
 				{
 					cout << "Wife Name : " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][0].c_str())][0] << " " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][0].c_str())][1]  << '\n';
 					result<<"Wife Name : " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][0].c_str())][0] << " " << INDIs[atoi(FAMs[(atoi(fam_id.c_str()))][0].c_str())][1]  << '\n';
 				}
 				if (INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][4] == "-1") {
 					cout << "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';
-					result<<"Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';			
+					result<<"Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][5].c_str()))][1] << '\n';
 				}
 				if (INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][4] == "-1") {
 					cout << "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';
-					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';			
+					result<< "Child Name : " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][0] << " " << INDIs[(atoi(FAMs[(atoi(fam_id.c_str()))][6].c_str()))][1] << '\n';
 				}
 			}
-			
 		}
-			
-	  }		
-	}	
+	  }
+	}
 }
 
 void recentBirths()
@@ -783,17 +844,17 @@ void recentBirths()
   	int Day    = localTime->tm_mday;
   	int Month  = localTime->tm_mon + 1;
  	int Year   = localTime->tm_year + 1900;
-	
+
 	Date currentdt = {Day, Month, Year};
 
-	
+
 	for(int j = 1; j <= indiv_it; j++)
 	{
-		
+
 		if(INDIs[j][3]!="-1")
 		{
 		string date = INDIs[j][3];
-		
+
 		string arr[3];
     	int i = 0;
     	stringstream ssin(date);
@@ -801,28 +862,24 @@ void recentBirths()
         ssin >> arr[i];
         ++i;
         }
-		
+
   		int d    =atoi(arr[0].c_str()) ;
   		int mt  = monthToInt(arr[1]);
  		int yr   = atoi(arr[2].c_str());
   		Date birthdt = {d,mt,yr};
-  		
-			
+
+
 		if((getDifference(birthdt,currentdt)<=30 )&& (getDifference(birthdt,currentdt)>0 ))
 		{
-			
+
 			cout << "Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][3] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
 			result<<"Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][3] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
 		}
-	
-		}		
+
+		}
 	}
-	
+
 }
-
-
-
-
 
 /* opens GEDCOM file and creates new output.txt
  * reads the level of each line and runs appropriate function
@@ -841,11 +898,13 @@ int main(int argc, char* argv[]) {
 	test.open(def, ios::in);
 	result.open("output.txt", ios::out);
 	test >> data;
+	cout << "Reading from file: " << def;
+	result << "Reading from file: " << def;
 	while(!test.eof())
 	 {
 		tag = "Invalid tag";
-		cout << data << " ";
-		result << data << " ";
+		//cout << data << " ";
+		//result << data << " ";
 		if(data[0] == '0') {
 			foundAZero();
 			num = "0";
@@ -860,7 +919,7 @@ int main(int argc, char* argv[]) {
 			result << "Error: unrecognizable level. Program Terminated" << '\n';
 			return -1;
 		}
-		printLevel(num);
+		//printLevel(num);
 		test >> data;
 	}
 
@@ -931,6 +990,16 @@ int main(int argc, char* argv[]) {
 	result << '\n' << "========================== US10 - At Least 14 at Marriage =============================" << endl;
 	confirmMarriageAge();
 
+	//print any parents who are too old (mom is 60+ yrs older and dad is 80+ yrs older than kids)
+	cout << '\n' << "========================== US12 - Parents not too old =============================" << '\n';
+	result << '\n' << "========================== US12 - Parents not too old =============================" << endl;
+	parentsTooOld();
+
+	//print all INDIs and their current ages
+	cout << '\n' << "========================== US27 - Include Individual Ages =============================" << '\n';
+	result << '\n' << "========================== US27 - Include Individual Ages =============================" << endl;
+	listCurrentAge();
+
 	// print husband having gender female and wife having gender male in family
 	cout << '\n' << "========================== US21 - Correct gender for role =============================" << '\n'<<'\n';
 	result << '\n' << "========================== US21 - Correct gender for role =============================" << endl<<endl;
@@ -940,19 +1009,20 @@ int main(int argc, char* argv[]) {
 	result << '\n' << "========================== US22 - Unique ID for Individual and family =============================" << endl<<endl;
 	checkID();
 	checkFid();
-	
+
 	cout << '\n' << "========================== US36 -List of Recent deaths in last 30 days =============================" << '\n'<<'\n';
 	result << '\n' << "========================== US36 - Recent deaths in last 30 days =============================" << endl<<endl;
 	recentDeaths();
-	
+
 	cout<<'\n'<<"========================== US37 - List of recent Survivors ============================="<<'\n'<<'\n';
 	result<<'\n'<<"========================== US37 - List of recent Survivors ============================="<<'\n'<<'\n';
 	recentSurvivors();
-	
+
 	cout<<'\n'<<"========================== US35 - List of recent Births ============================="<<'\n'<<'\n';
 	result<<'\n'<<"========================== US35 - List of recent Births ============================="<<'\n'<<'\n';
 	recentBirths();
-	
+
+
 
 	test.close();
 	result.close();
