@@ -819,6 +819,36 @@ void recentBirths()
 	}
 	
 }
+/* US03: Birth should come before death
+ * prints error message if INDI's birth date occurs after death
+ */
+void bornBeforedeath() {
+	int j;
+	char** death;
+	char** birth;
+	char birth_buf[16];
+	char death_buf[16];
+	
+	for(j = 1; j <= indiv_it; j++) {
+		//split the death date to day, month, year
+		if (INDIs[j][3]!="-1" && INDIs[j][4]!="-1") {
+		    strcpy(birth_buf, INDIs[j][3].c_str());
+		    strcpy(death_buf, INDIs[j][4].c_str());
+			birth = splitTheDate(birth_buf);
+			death = splitTheDate(death_buf);
+			if (compareDates(birth,death) == 0) { 
+				cout << "Error US03: Birth Date ("
+			     	<< INDIs[j][3] << ") of " << INDIs[j][0]
+				 	<< " " << INDIs[j][1] << "(" << unique_id[j] 
+				 	<< ") occurs before death date (" << INDIs[j][4] << ")"<< endl;
+			}
+			free(death);
+	    	free(birth);
+		}	
+	}
+	
+	
+}
 
 
 
@@ -952,6 +982,9 @@ int main(int argc, char* argv[]) {
 	cout<<'\n'<<"========================== US35 - List of recent Births ============================="<<'\n'<<'\n';
 	result<<'\n'<<"========================== US35 - List of recent Births ============================="<<'\n'<<'\n';
 	recentBirths();
+	result<<'\n'<<"========================== US03 birth date should come before death date========================="<<endl;
+	cout<<'\n'<<"========================== US03 birth date should come before death date ============================="<<'\n'<<'\n';
+	bornBeforedeath();
 	
 
 	test.close();
