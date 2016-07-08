@@ -904,6 +904,29 @@ void recentBirths()
 
 }
 
+void livingMarried()
+{
+	for(int j = 1; j <= fam_it; j++)
+	{
+		string temp = FAMs[j][0];
+		int temp1 = atoi(temp.c_str());
+		string temp_W = FAMs[j][1];
+		int temp2 = atoi(temp_W.c_str());
+		
+		//checking if husband is dead or wife is dead and if they are divorced.
+		if((INDIs[temp1][4]== "-1") && (INDIs[temp2][4]=="-1")&& (FAMs[j][3]=="-1"))
+		{
+			cout<<"Living couple from family "<< unique_fam[j]<<":"<<'\n';
+			cout<< "Husband Name: " << INDIs[temp1][0] <<" "<<INDIs[temp1][1] <<" and "
+				<< "Wife Name: " << INDIs[temp2][0] <<" "<< INDIs[temp2][1] <<" Married on"<<FAMs[j][2]<<'\n'<<'\n';
+				
+			result<<"Living couple from family "<< unique_fam[j]<<":"<<'\n';
+			result<< "Husband Name: " << INDIs[temp1][0] <<" "<<INDIs[temp1][1] <<" and "
+				<< "Wife Name: " << INDIs[temp2][0] <<" "<< INDIs[temp2][1] <<" Married on"<<FAMs[j][2]<<'\n'<<'\n';	
+		}			
+	}	
+}
+
 /* opens GEDCOM file and creates new output.txt
  * reads the level of each line and runs appropriate function
  * if unrecognized, prints error message and terminates program
@@ -1044,6 +1067,10 @@ int main(int argc, char* argv[]) {
 	cout<<'\n'<<"========================== US35 - List of recent Births ============================="<<'\n'<<'\n';
 	result<<'\n'<<"========================== US35 - List of recent Births ============================="<<'\n'<<'\n';
 	recentBirths();
+	
+	cout<<'\n'<<"========================== US30 - List living married ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US30 - List living married ============================="<<'\n'<<'\n';
+	livingMarried();
 
 
 
