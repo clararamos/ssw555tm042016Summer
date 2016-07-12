@@ -1,58 +1,90 @@
-Reading from file: GEDCOM_test.ged
-========================== INDIs - Names -IDs- Gender============================
-@I1@: Clara Ramos   Gender:F
-@I2@: Tito Ramos   Gender:M
-@I2@: Sally Paz   Gender:F
-@I4@: Allison Ramos   Gender:F
-@I5@: David Paz   Gender:M
-@I6@: Netty Gregorio   Gender:F
-@I7@: Maria Rivera   Gender:F
-@I8@: Francis Paz   Gender:F
-@I9@: May Tobar   Gender:M
-@I10@: Jake Paz   Gender:M
-@I11@: Bonnie Paz   Gender:F
-@I12@: Bobby Paz   Gender:M
-@I13@: Eric Paz   Gender:M
-@I14@: Ana Intud   Gender:F
+Reading from file: test.ged
+Current Date: 7/12/2016
 
-======== FAMs-IDs - IDs - Spouses' Names- Sex- US21- Correct gender for role ==============
+========================== Summary of all INDIs ============================
+@I1@: Clara Ramos
+  Gender: F
+  Birthdate: 1 JAN 1995
+  Current age: 21
+@I2@: Tito Ramos
+  Gender: M
+  Birthdate: 18 OCT 1965
+  Deathdate: 22 JUN 2016
+@I2@: Sally Paz
+  Gender: F
+  Birthdate: 7 MAY 2005
+  Current age: 11
+@I4@: Allison Ramos
+  Gender: F
+  Birthdate: 30 JUN 2016
+  Current age: 0
+@I5@: David Paz
+  Gender: M
+  Birthdate: 13 SEP 1939
+  Deathdate: 12 AUG 1999
+@I6@: Netty Gregorio
+  Gender: F
+  Birthdate: 12 AUG 1925
+  Deathdate: 23 APR 2005
+@I7@: Maria Rivera
+  Gender: F
+  Birthdate: 2 MAR 1961
+  Deathdate: 29 JUN 1966
+@I8@: Francis Paz
+  Gender: F
+  Birthdate: 7 DEC 1963
+  Current age: 52
+@I9@: May Tobar
+  Gender: M
+  Birthdate: 2 JUN 1966
+  Current age: 50
+@I10@: Jake Paz
+  Gender: M
+  Birthdate: 5 JAN 2011
+  Current age: 5
+@I11@: Bonnie Paz
+  Gender: F
+  Birthdate: 10 AUG 2000
+  Current age: 15
+@I12@: Bobby Paz
+  Gender: M
+  Birthdate: 30 APR 2005
+  Current age: 11
+@I13@: Eric Paz
+  Gender: M
+  Birthdate: 11 SEP 1910
+  Deathdate: 4 AUG 1965
+@I14@: Ana Intud
+  Gender: F
+  Birthdate: 11 MAR 1914
+  Deathdate: 12 APR 1972
+
+========= Summary of all FAMs ==============
 Family ID: @F1@: 
-Husband ID: @I2@
-Husband Name: Tito Ramos
-Husband Sex: M
-Wife ID: @I2@
-Wife Name: Sally Paz
-Wife Sex: F
+  Husband: @I2@ Tito Ramos
+  Wife: @I2@ Sally Paz
+  Child: @I1@ Clara Ramos
+  Child: @I4@ Allison Ramos
 Family ID: @F2@: 
-Husband ID: @I5@
-Husband Name: David Paz
-Husband Sex: M
-Wife ID: @I6@
-Wife Name: Netty Gregorio
-Wife Sex: F
+  Husband: @I5@ David Paz
+  Wife: @I6@ Netty Gregorio
+  Child: @I2@ Sally Paz
+  Child: @I11@ Bonnie Paz
+  Child: @I12@ Bobby Paz
 Family ID: @F3@: 
-Husband ID: @I5@
-Husband Name: David Paz
-Husband Sex: M
-Wife ID: @I7@
-Wife Name: Maria Rivera
-Wife Sex: F
+  Husband: @I5@ David Paz
+  Wife: @I7@ Maria Rivera
+  Child: @I8@ Francis Paz
 Family ID: @F4@: 
-Husband ID: @I13@
-Husband Name: Eric Paz
-Husband Sex: M
-Wife ID: @I14@
-Wife Name: Ana Intud
-Wife Sex: F
+  Husband: @I13@ Eric Paz
+  Wife: @I14@ Ana Intud
+  Child: @I5@ David Paz
 Family ID: @F4@: 
-Husband ID: @I8@
-Husband Name: Francis Paz
-Husband Sex: F
-Wife ID: @I9@
-Wife Name: May Tobar
-Wife Sex: M
+  Husband: @I8@ Francis Paz
+  Wife: @I9@ May Tobar
+  Child: @I10@ Jake Paz
 
-========================== US02 - Birth before Marriage =============================
+========================== Errors and Anomalies =============================
 Error US02: Birth Date of Tito Ramos (@I2@) occurs after marriage date in Family @F1@.
   Marriage Date: 10 APR 1950
   Birth Date: 18 OCT 1965
@@ -65,8 +97,6 @@ Error US02: Birth Date of David Paz (@I5@) occurs after marriage date in Family 
 Error US02: Birth Date of Ana Intud (@I14@) occurs after marriage date in Family @F4@.
   Marriage Date: 9 MAR 1914
   Birth Date: 11 MAR 1914
-
-========================== US08 - Child born before Parents' Marriage or after Divorce =============================
 Anomaly US08: Birth Date of Francis Paz (@I8@) occurs before parents' marriage in Family @F3@.
   Marriage Date: 1 FEB 1975
   Birth Date: 7 DEC 1963
@@ -82,8 +112,6 @@ Anomaly US08: Birth Date of Bonnie Paz (@I11@) occurs after parents' divorce in 
 Anomaly US08: Birth Date of Bobby Paz (@I12@) occurs after parents' divorce in Family @F2@.
   Divorce Date: 10 AUG 1939
   Birth Date: 30 APR 2005
-
-========================== US09 - Child born after Parent's Death =============================
 Anomaly US09: Birth Date of Allison Ramos (@I4@) occurs after parent's (@I2@) death in Family @F1@.
   Death Date: 22 JUN 2016
   Birth Date: 30 JUN 2016
@@ -102,8 +130,6 @@ Error US09: Birth Date of Sally Paz (@I2@) occurs after parent's (@I6@) death in
 Error US09: Birth Date of Bobby Paz (@I12@) occurs after parent's (@I6@) death in Family @F2@.
   Death Date: 23 APR 2005
   Birth Date: 30 APR 2005
-
-========================== US10 - At Least 14 at Marriage =============================
 Error US10: Age of Netty Gregorio (@I6@) in Family @F2@ at marriage is less than 14 years.
   Marriage Date: 10 AUG 1939
   Birth Date: 12 AUG 1925
@@ -113,30 +139,18 @@ Error US10: Age of Maria Rivera (@I7@) in Family @F3@ at marriage is less than 1
 Error US10: Age of Eric Paz (@I13@) in Family @F4@ at marriage is less than 14 years.
   Marriage Date: 9 MAR 1914
   Birth Date: 11 SEP 1910
-
-========================== US12 - Parents not too old =============================
-Error US12: Netty Gregorio (@I6@) has an age difference of 60 years or older with child Sally Paz (@I2@) in Family @F2@
-Error US12: Netty Gregorio (@I6@) has an age difference of 60 years or older with child Bonnie Paz (@I11@) in Family @F2@
-Error US12: Netty Gregorio (@I6@) has an age difference of 60 years or older with child Bobby Paz (@I12@) in Family @F2@
-
-========================== US27 - Include Individual Ages =============================
-Current Date: 7/8/2016
-@I1@: Clara Ramos
-  Current Age: 21
-@I2@: Sally Paz
-  Current Age: 11
-@I4@: Allison Ramos
-  Current Age: 0
-@I8@: Francis Paz
-  Current Age: 52
-@I9@: May Tobar
-  Current Age: 50
-@I10@: Jake Paz
-  Current Age: 5
-@I11@: Bonnie Paz
-  Current Age: 15
-@I12@: Bobby Paz
-  Current Age: 11
+Error US12: Netty Gregorio (@I6@) has an age difference of 60 years or older with child Sally Paz (@I2@) in Family @F2@.
+  Birthdate of @I6@: 12 AUG 1925
+  Birthdate of @I2@: 7 MAY 2005
+    Difference: 79
+Error US12: Netty Gregorio (@I6@) has an age difference of 60 years or older with child Bonnie Paz (@I11@) in Family @F2@.
+  Birthdate of @I6@: 12 AUG 1925
+  Birthdate of @I11@: 10 AUG 2000
+    Difference: 74
+Error US12: Netty Gregorio (@I6@) has an age difference of 60 years or older with child Bobby Paz (@I12@) in Family @F2@.
+  Birthdate of @I6@: 12 AUG 1925
+  Birthdate of @I12@: 30 APR 2005
+    Difference: 79
 
 ========================== US21 - Correct gender for role =============================
 
@@ -151,17 +165,17 @@ Error US22: Family Id @F4@ is shared by two families
 
 ========================== US36 - Recent deaths in last 30 days =============================
 
-Death date of Tito Ramos   is 22 JUN 2016 having individual Id: @I2@ & Family id:@F1@
+Death date of Tito Ramos   is 22 JUN 2016 having individual Id: @I2@ & Family id:@F1@
 
 ========================== US37 - List of recent Survivors =============================
 
-Recent death of Tito Ramos   on 22 JUN 2016 with family id : @F1@ and family members:Wife Name : Sally Paz
+Recent death of Tito Ramos   on 22 JUN 2016 with family id : @F1@ and family members:Wife Name : Sally Paz
 Child Name : Clara Ramos
 Child Name : Allison Ramos
 
 ========================== US35 - List of recent Births =============================
 
-Birth date of Allison Ramos   is 30 JUN 2016 having individual Id: @I4@ & Family id:@F3@
+Birth date of Allison Ramos   is 30 JUN 2016 having individual Id: @I4@ & Family id:@F3@
 
 ========================== US30 - List living married =============================
 
