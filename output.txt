@@ -1,5 +1,5 @@
-Reading from file: test.ged
-Current Date: 7/12/2016
+Reading from file: GEDCOM_test.ged
+Current Date: 7/13/2016
 
 ========================== Summary of all INDIs ============================
 @I1@: Clara Ramos
@@ -151,34 +151,29 @@ Error US12: Netty Gregorio (@I6@) has an age difference of 60 years or older wit
   Birthdate of @I6@: 12 AUG 1925
   Birthdate of @I12@: 30 APR 2005
     Difference: 79
-
-========================== US21 - Correct gender for role =============================
-
-Error US21-Correct gender for Francis Paz having gender Female must be male as he is husband of May Tobar
+Error US21-Correct gender for Francis Paz having sex Female must be male as he is husband of May Tobar
 Error US21-Correct gender for May Tobar having gender Male must be female as she is wife of Francis Paz
+Error US22:Individual ID: @I2@ of Tito Ramos is conflicting with Individual ID: @I2@ of Sally Paz
 
-========================== US22 - Unique ID for Individual and family =============================
+Error US22: Family ID @F4@ is shared by two families
 
-Error US22: Individual ID: @I2@ of Tito Ramos is conflicting with Individual ID: @I2@ of Sally Paz
+================= List of recent deaths in last 30 days =======================
 
-Error US22: Family Id @F4@ is shared by two families
+Death date of Tito Ramos   is 22 JUN 2016 having individual Id: @I2@ & Family id:@F1@
 
-========================== US36 - Recent deaths in last 30 days =============================
+========================== List of recent Survivors =============================
 
-Death date of Tito Ramos   is 22 JUN 2016 having individual Id: @I2@ & Family id:@F1@
-
-========================== US37 - List of recent Survivors =============================
-
-Recent death of Tito Ramos   on 22 JUN 2016 with family id : @F1@ and family members:Wife Name : Sally Paz
+Recent death of Tito Ramos   on 22 JUN 2016 with family id : @F1@
+Family members:
+Wife Name : Sally Paz
 Child Name : Clara Ramos
 Child Name : Allison Ramos
 
-========================== US35 - List of recent Births =============================
+========================== List of recent Births =============================
 
-Birth date of Allison Ramos   is 30 JUN 2016 having individual Id: @I4@ & Family id:@F3@
+Birth date of Allison Ramos is 30 JUN 2016 with individual Id: @I4@ & Family id:@F3@
 
-========================== US30 - List living married =============================
+========================== List of living married =============================
 
 Living couple from family @F4@:
-Husband Name: Francis Paz and Wife Name: May Tobar Married on 14 FEB 2011
-
+Husband Name: Francis Paz and Wife Name: May Tobar Married on 14 FEB 2011 with family ID:@F4@

@@ -602,11 +602,12 @@ void checkGender()
 		string temp_W12 = FAMs[j][1];
 		int temp12 = atoi(temp_W12.c_str());
 		string tem12 = INDIs[temp12][2];
-
 		if(temp_s =="F")
 		{
 			temp_s="Female";
 			cout<<"Error US21-Correct gender for "<< INDIs[temp1][0]<<" "<<INDIs[temp1][1]<<" having sex "<<temp_s<<" must be male as he is husband of "
+			     <<INDIs[temp12][0]<<" "<< INDIs[temp12][1]<<"\n";
+			result<<"Error US21-Correct gender for "<< INDIs[temp1][0]<<" "<<INDIs[temp1][1]<<" having sex "<<temp_s<<" must be male as he is husband of "
 			     <<INDIs[temp12][0]<<" "<< INDIs[temp12][1]<<"\n";
 		}
 
@@ -620,32 +621,11 @@ void checkGender()
 			tem= "Male";
 			cout<<"Error US21-Correct gender for "<<INDIs[temp2][0]<<" "<< INDIs[temp2][1]<<" having gender "<<tem<<" must be female as she is wife of "
 			     << INDIs[temp1][0]<<" "<<INDIs[temp1][1]<<endl;
+			     
+			result<<"Error US21-Correct gender for "<<INDIs[temp2][0]<<" "<< INDIs[temp2][1]<<" having gender "<<tem<<" must be female as she is wife of "
+			     << INDIs[temp1][0]<<" "<<INDIs[temp1][1]<<endl;
 		}
 
-		// Writing to output.txt
-		string temp_H1 = FAMs[j][0];
-		int temp3 = atoi(temp_H1.c_str());
-		string temprs_h= INDIs[temp3][2];
-
-		string temp_W123 = FAMs[j][1];
-		int temp123 = atoi(temp_W123.c_str());
-		string tem123 = INDIs[temp123][2];
-		if(temprs_h =="F")
-		{
-			temprs_h= "Female";
-			result <<"Error US21-Correct gender for "<<INDIs[temp3][0] << " " << INDIs[temp3][1] <<" having gender "<<temprs_h<<" must be male as he is husband of "
-			     <<INDIs[temp123][0]<<" "<< INDIs[temp123][1]<<"\n";
-		}
-
-		string temp_W1 = FAMs[j][1];
-		int temp4 = atoi(temp_W1.c_str());
-		string temprs_w= INDIs[temp4][2];
-		if (temprs_w =="M")
-		{
-			temprs_w= "Male";
-			result <<"Error US21-Correct gender for "<<INDIs[temp4][0] << " " << INDIs[temp4][1]<<" having gender " <<temprs_w<<" must be female as she is wife of "
-					<< INDIs[temp1][0]<<" "<<INDIs[temp1][1]<<endl;
-		}
 	}
 }
 
@@ -665,22 +645,14 @@ void checkID()
          {
 		   cout<<"Error US22:Individual ID: "<<unique_id[i]<<" of"<<" "<< INDIs[i][0] << " " << INDIs[i][1] << " is conflicting with Individual ID: "
 		       <<unique_id[j]<<" of"<<" "<<INDIs[j][0] << " " << INDIs[j][1]<<endl<<endl;
+		       
+		    result<<"Error US22:Individual ID: "<<unique_id[i]<<" of"<<" "<< INDIs[i][0] << " " << INDIs[i][1] << " is conflicting with Individual ID: "
+		       <<unique_id[j]<<" of"<<" "<<INDIs[j][0] << " " << INDIs[j][1]<<endl<<endl;
 
        	}
            int arr_sizet = sizeof(unique_id)/sizeof(unique_id[0]);
 	int sizet=0;
 
-	// printing to output.txt
-	for(int i=0;i< arr_sizet; i++)
-	{
-		if(unique_id[i]!="")
-			sizet++;
-	}
-	for(int i = 0; i <= sizet; i++)
-      for(int j = i+1; j <= sizet; j++)
-        if(unique_id[i] == unique_id[j])
-              result<<"Error US22: Individual ID: "<<unique_id[i]<<" of"<<" "<< INDIs[i][0] << " " << INDIs[i][1] << " is conflicting with Individual ID: "
-		       <<unique_id[j]<<" of"<<" "<<INDIs[j][0] << " " << INDIs[j][1]<<endl<<endl;
 }
 
 void checkFid()
@@ -697,21 +669,11 @@ void checkFid()
 	for(int i = 0; i < size; i++)
       for(int j = i+1; j < size; j++)
         if(unique_fam[i] == unique_fam[j])
-           cout<<"Error US22: Family ID "<<unique_fam[i] << " is shared by two families"<<endl;
+          {
+		   cout<<"Error US22: Family ID "<<unique_fam[i] << " is shared by two families"<<endl;
+           result<<"Error US22: Family ID "<<unique_fam[i] << " is shared by two families"<<endl;
+       	}
 
-    int arr_sizef1 = sizeof(unique_fam)/sizeof(unique_fam[0]);
-	int size1=0;
-
-    for(int i=0;i< arr_sizef1; i++)
-	{
-		if(unique_fam[i]!="")
-			size1++;
-	}
-    size++;
-	for(int i = 1; i <= size1; i++)
-      for(int j = i+1; j <= size1; j++)
-        if(unique_fam[i] == unique_fam[j])
-			result<<"Error US22: Family Id "<<unique_fam[i] <<" is shared by two families"<<endl;
 }
 
 int countLeapYears(Date d)
@@ -773,8 +735,10 @@ void recentDeaths()
 		if(getDifference(deathdt,currentdt)<=30 )
 		{
 
-			cout << "Death date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][4] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
-			result<<"Death date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][4] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
+			cout << "Death date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][4] <<" having individual Id: "
+				 <<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
+			result<<"Death date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][4] <<" having individual Id: "
+				  <<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
 		}
 		}
 	}
@@ -816,8 +780,10 @@ void recentSurvivors()
 		if(getDifference(deathdt,currentdt)<=30 )
 		{
 
-			cout << "Recent death of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"on"<< INDIs[j][4] <<" with family id : " <<unique_fam[j-1] <<" and family members:";
-			result<< "Recent death of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"on"<< INDIs[j][4] <<" with family id : " <<unique_fam[j-1] <<" and family members:";
+			cout << "Recent death of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"on"<< INDIs[j][4] <<" with family id : " <<unique_fam[j-1] <<'\n'
+				<<"Family members:"<<'\n';
+			result<< "Recent death of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"on"<< INDIs[j][4] <<" with family id : " <<unique_fam[j-1] <<'\n'
+				<<"Family members:"<<'\n';
 			if (INDIs[j][2] == "M")
 			{
 				string fam_id = INDIs[j][6];
@@ -896,8 +862,8 @@ void recentBirths()
 		if((getDifference(birthdt,currentdt)<=30 )&& (getDifference(birthdt,currentdt)>0 ))
 		{
 
-			cout << "Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][3] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
-			result<<"Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<"   " <<"is"<< INDIs[j][3] <<" having individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
+			cout << "Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<" " <<"is"<< INDIs[j][3] <<" with individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
+			result<<"Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<" " <<"is"<< INDIs[j][3] <<" with individual Id: "<<unique_id[j]<<" & Family id:"<<unique_fam[j-1] <<'\n';
 		}
 
 		}
@@ -917,13 +883,13 @@ void livingMarried()
 		//checking if husband is dead or wife is dead and if they are divorced.
 		if((INDIs[temp1][4]== "-1") && (INDIs[temp2][4]=="-1")&& (FAMs[j][3]=="-1"))
 		{
-			cout<<"Living couple from family "<< unique_fam[j]<<":"<<'\n';
+			
 			cout<< "Husband Name: " << INDIs[temp1][0] <<" "<<INDIs[temp1][1] <<" and "
-				<< "Wife Name: " << INDIs[temp2][0] <<" "<< INDIs[temp2][1] <<" Married on"<<FAMs[j][2]<<'\n'<<'\n';
+				<< "Wife Name: " << INDIs[temp2][0] <<" "<< INDIs[temp2][1] <<" Married on"<<FAMs[j][2]<<" with family ID:"<<unique_fam[j]<<'\n';
 				
 			result<<"Living couple from family "<< unique_fam[j]<<":"<<'\n';
 			result<< "Husband Name: " << INDIs[temp1][0] <<" "<<INDIs[temp1][1] <<" and "
-				<< "Wife Name: " << INDIs[temp2][0] <<" "<< INDIs[temp2][1] <<" Married on"<<FAMs[j][2]<<'\n'<<'\n';	
+				<< "Wife Name: " << INDIs[temp2][0] <<" "<< INDIs[temp2][1] <<" Married on"<<FAMs[j][2]<<" with family ID:"<<unique_fam[j]<<'\n';	
 		}			
 	}	
 }
@@ -1039,30 +1005,29 @@ int main(int argc, char* argv[]) {
 	parentsTooOld(); //US12
 
 	// print husband having gender female and wife having gender male in family
-	cout << '\n' << "========================== US21 - Correct gender for role =============================" << '\n'<<'\n';
-	result << '\n' << "========================== US21 - Correct gender for role =============================" << endl<<endl;
-	checkGender();
+	checkGender();// US21
 
-    cout << '\n' << "========================== US22 - Unique ID for Individual and family =============================" << '\n'<<'\n';
-	result << '\n' << "========================== US22 - Unique ID for Individual and family =============================" << endl<<endl;
-	checkID();
-	checkFid();
+    
+	// prints conflicting Individual IDs and conflicting family IDs
+	checkID();// US22
+	checkFid();// US22
 
-	cout << '\n' << "========================== US36 -List of Recent deaths in last 30 days =============================" << '\n'<<'\n';
-	result << '\n' << "========================== US36 - Recent deaths in last 30 days =============================" << endl<<endl;
-	recentDeaths();
+	cout << '\n' << "=================== List of recent deaths in last 30 days =======================" << '\n'<<'\n';
+	result << '\n' << "================= List of recent deaths in last 30 days =======================" << endl<<endl;
+	// prints deaths in last 30 days
+	recentDeaths();// US36
 
-	cout<<'\n'<<"========================== US37 - List of recent Survivors ============================="<<'\n'<<'\n';
-	result<<'\n'<<"========================== US37 - List of recent Survivors ============================="<<'\n'<<'\n';
-	recentSurvivors();
+	cout<<'\n'<<"==========================  List of recent Survivors ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== List of recent Survivors ============================="<<'\n'<<'\n';
+	recentSurvivors();// US37
 
-	cout<<'\n'<<"========================== US35 - List of recent Births ============================="<<'\n'<<'\n';
-	result<<'\n'<<"========================== US35 - List of recent Births ============================="<<'\n'<<'\n';
-	recentBirths();
+	cout<<'\n'<<"========================== List of recent Births ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== List of recent Births ============================="<<'\n'<<'\n';
+	recentBirths();// US35
 	
-	cout<<'\n'<<"========================== US30 - List living married ============================="<<'\n'<<'\n';
-	result<<'\n'<<"========================== US30 - List living married ============================="<<'\n'<<'\n';
-	livingMarried();
+	cout<<'\n'<<"========================== List of living married ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== List of living married ============================="<<'\n'<<'\n';
+	livingMarried();// US30
 
 	test.close();
 	result.close();
