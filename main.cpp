@@ -1097,6 +1097,15 @@ int main(int argc, char* argv[]) {
 	// prints conflicting Individual IDs and conflicting family IDs
 	checkID();// US22
 	checkFid();// US22
+	
+	// Birth date should come before death date
+	 bornBeforedeath(); //US03
+	
+	//Divorce date should come before death date
+	divorceBeforedeath(); //US06
+   
+	//Fewer than 15 siblings in a family
+	 fewersiblings(); //US15
 
 	cout << '\n' << "=================== List of recent deaths in last 30 days =======================" << '\n'<<'\n';
 	result << '\n' << "================= List of recent deaths in last 30 days =======================" << endl<<endl;
@@ -1115,14 +1124,7 @@ int main(int argc, char* argv[]) {
 	result<<'\n'<<"========================== List of living married ============================="<<'\n'<<'\n';
 	livingMarried();// US30
 	
-	// Birth date should come before death date
-	 bornBeforedeath(); //US03
-	
-	//Divorce date should come before death date
-	divorceBeforedeath(); //US06
-   
-	//Fewer than 15 siblings in a family
-	 fewersiblings(); //US15
+
 
 	test.close();
 	result.close();
