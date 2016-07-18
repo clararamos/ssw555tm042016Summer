@@ -1,5 +1,5 @@
-Reading from file: GEDCOM_test.ged
-Current Date: 7/13/2016
+Reading from file: test.ged
+Current Date: 7/17/2016
 
 ========================== Summary of all INDIs ============================
 @I1@: Clara Ramos
@@ -159,11 +159,13 @@ Error US22: Family ID @F4@ is shared by two families
 
 ================= List of recent deaths in last 30 days =======================
 
-Death date of Tito Ramos   is 22 JUN 2016 having individual Id: @I2@ & Family id:@F1@
+Death date of Tito Ramos   is 22 JUN 2016
+ having individual Id: @I2@ & Family id:@F1@
 
 ========================== List of recent Survivors =============================
 
-Recent death of Tito Ramos   on 22 JUN 2016 with family id : @F1@
+Recent death of Tito Ramos   on 22 JUN 2016
+ with family id : @F1@
 Family members:
 Wife Name : Sally Paz
 Child Name : Clara Ramos
@@ -171,9 +173,11 @@ Child Name : Allison Ramos
 
 ========================== List of recent Births =============================
 
-Birth date of Allison Ramos is 30 JUN 2016 with individual Id: @I4@ & Family id:@F3@
+Birth date of Allison Ramos is 30 JUN 2016
+ with individual Id: @I4@ & Family id:@F3@
 
 ========================== List of living married =============================
 
 Living couple from family @F4@:
-Husband Name: Francis Paz and Wife Name: May Tobar Married on 14 FEB 2011 with family ID:@F4@
+Husband Name: Francis Paz and Wife Name: May Tobar Married on 14 FEB 2011
+ with family ID:@F4@

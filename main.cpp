@@ -1,5 +1,5 @@
 /* CS 555 WS
- * Project 06 - GEDCOM parser : Sprint 2
+ * Project 08 - GEDCOM parser : Sprint 3
  * Clara Ramos, Larisa Machado, Varun Kumar
  * We pledge our honor that we have abided by the Stevens Honor System.
  */
@@ -55,7 +55,7 @@ string INDIs[5000][7];
  * FAMs[x][4] = index of latest recorded child; instantiated to 3
  * FAMs[x][y] = Child's ID (where y is from 5-19 since allowed up to 15 children)
  */
-string FAMs[1000][20];
+string FAMs[1000][40];
 
 struct Date {int d, m, y;};
 
@@ -118,7 +118,7 @@ int foundAZero() {
 				fam_it++;
 				child_it = 5;
 				FAMs[fam_it][3] = "-1";
-				for(int k = 5; k < 20; k++) {
+				for(int k = 5; k < 40; k++) {
 					FAMs[fam_it][k] = "-1";
 				}
 			}
@@ -353,7 +353,7 @@ void childBornAfterMarriage() {
 		FAMs[j][2].copy(marriageDate, FAMs[j][2].length(), 0);
 		marriage = splitTheDate(marriageDate);
 
-		for(int k = 5; k < 20 && FAMs[j][k] != "-1"; k++) {
+		for(int k = 5; k < 40 && FAMs[j][k] != "-1"; k++) {
 			id = atoi(FAMs[j][k].c_str());
 			char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
 			INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
@@ -389,7 +389,7 @@ void childBornBeforeDivorce() {
 			FAMs[j][3].copy(divorceDate, FAMs[j][3].length(), 0);
 			divorce = splitTheDate(divorceDate);
 
-			for(int k = 5; k < 20 && FAMs[j][k] != "-1"; k++) {
+			for(int k = 5; k < 40 && FAMs[j][k] != "-1"; k++) {
 				id = atoi(FAMs[j][k].c_str());
 				char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
 				INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
@@ -435,7 +435,7 @@ void childBornBeforeParentsDeath() {
 				INDIs[idP][4].copy(deathDate, INDIs[idP][4].length(), 0);
 				death = splitTheDate(deathDate);
 
-				for(int k = 5; k < 20 && FAMs[j][k] != "-1"; k++) { //if parent is dead, parse through kid data
+				for(int k = 5; k < 40 && FAMs[j][k] != "-1"; k++) { //if parent is dead, parse through kid data
 					id = atoi(FAMs[j][k].c_str());
 					char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
 					INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
@@ -532,7 +532,7 @@ void parentsTooOld() {
 			INDIs[idP][3].copy(birthDate, INDIs[idP][3].length(), 0);
 			birth = splitTheDate(birthDate);
 
-			for(int k = 5; k < 20 && FAMs[j][k] != "-1"; k++) { //parse through the kids, if applicable
+			for(int k = 5; k < 40 && FAMs[j][k] != "-1"; k++) { //parse through the kids, if applicable
 				id = atoi(FAMs[j][k].c_str());
 				char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
 				INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
@@ -894,6 +894,93 @@ void livingMarried()
 	}	
 }
 
+/* US03: Birth should come before death
+ * prints error message if INDI's birth date occurs after death
+ */
+void bornBeforedeath() {
+	int j;
+	char** death;
+	char** birth;
+	char birth_buf[16];
+	char death_buf[16];
+
+	for(j = 1; j <= indiv_it; j++) {
+		//split the death date to day, month, year
+		if (INDIs[j][3]!="-1" && INDIs[j][4]!="-1") {
+		    strcpy(birth_buf, INDIs[j][3].c_str());
+		    strcpy(death_buf, INDIs[j][4].c_str());
+			birth = splitTheDate(birth_buf);
+			death = splitTheDate(death_buf);
+			if (compareDates(birth,death) == 0) {
+				cout << "Error US03: Birth Date ("
+			     	<< INDIs[j][3] << ") of " << INDIs[j][0]
+				 	<< " " << INDIs[j][1] << "(" << unique_id[j]
+				 	<< ") occurs before death date (" << INDIs[j][4] << ")"<< endl;
+				result << "Error US03: Birth Date ("
+			     	<< INDIs[j][3] << ") of " << INDIs[j][0]
+				 	<< " " << INDIs[j][1] << "(" << unique_id[j]
+				 	<< ") occurs before death date (" << INDIs[j][4] << ")"<< endl;
+			}
+			free(death);
+	    	free(birth);
+		}
+	}
+
+
+}
+//US06:Divorce date should come before death date
+void divorceBeforedeath()
+{
+	char** divorce;
+	char** death;
+	char divorce_buf[16];
+	char death_buf[16];
+	int id;
+	for (int j=1;j<= fam_it;j++){
+		if (FAMs[j][3]!= "-1"){
+			strcpy(divorce_buf,FAMs[j][3].c_str());
+			divorce = splitTheDate(divorce_buf);
+		for(int k=0;k<2;k++){
+		    if(INDIs[k][4]!="-1"){
+		    	id = atoi(FAMs[j][k].c_str());
+				strcpy(death_buf,INDIs[j][k].c_str());
+				death = splitTheDate(death_buf);
+		    	if(compareDates(divorce,death)==0){
+				cout << "Error US02: Divorce Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after death date in Family @F" << j << "@." <<endl;
+				cout << "  Death Date:" << INDIs[id][4] <<endl;
+				cout << "  Divorce Date:" << FAMs[j][3] << '\n';
+
+				result << "Error US02: Divorce Date of " << INDIs[k][0] << " " << INDIs[k][1] << " (" << unique_id[k] << ") occurs after death date in Family @F" << j << "@." <<endl;
+				result << "  Divorce Date:" << FAMs[j][3] <<endl;
+				result << "  Death Date:" << INDIs[id][4] <<endl;
+
+			}
+			free(divorce);
+	    	free(death);
+			}
+
+		}
+
+		}
+	}
+
+}
+//US 15: Fewer than 15 siblings in a family
+void fewersiblings(){
+	for(int j = 1; j < fam_it; j++){
+
+			if(FAMs[j][20] != "-1"){
+				cout << "Error US15: Family @f" << j << "@" << " has more than 15 siblings" << endl;
+				result << "Error US15: Family @f" << j << "@" << " has more than 15 siblings" << endl;
+			}
+
+
+
+  		}
+
+
+}
+
 /* opens GEDCOM file and creates new output.txt
  * reads the level of each line and runs appropriate function
  * if unrecognized, prints error message and terminates program
@@ -980,7 +1067,7 @@ int main(int argc, char* argv[]) {
 		result << "  Wife: " << unique_id[atoi(FAMs[j][1].c_str())] << " " << INDIs[atoi(FAMs[j][1].c_str())][0] << " " << INDIs[atoi(FAMs[j][1].c_str())][1] << endl;
 
 		//printing the children
-		for(int k = 5; k < 20 && FAMs[j][k] != "-1"; k++) {
+		for(int k = 5; k < 40 && FAMs[j][k] != "-1"; k++) {
 			cout << "  Child: " << unique_id[atoi(FAMs[j][k].c_str())] << " " << INDIs[atoi(FAMs[j][k].c_str())][0] << " " << INDIs[atoi(FAMs[j][k].c_str())][1] <<"\n";
 			result << "  Child: " << unique_id[atoi(FAMs[j][k].c_str())] << " " << INDIs[atoi(FAMs[j][k].c_str())][0] << " " << INDIs[atoi(FAMs[j][k].c_str())][1] << endl;
 		}
@@ -1007,10 +1094,18 @@ int main(int argc, char* argv[]) {
 	// print husband having gender female and wife having gender male in family
 	checkGender();// US21
 
-    
 	// prints conflicting Individual IDs and conflicting family IDs
 	checkID();// US22
 	checkFid();// US22
+
+	// Birth date should come before death date
+	bornBeforedeath(); //US03
+
+	//Divorce date should come before death date
+	//divorceBeforedeath(); //US06
+
+	//Fewer than 15 siblings in a family
+	fewersiblings(); //US15
 
 	cout << '\n' << "=================== List of recent deaths in last 30 days =======================" << '\n'<<'\n';
 	result << '\n' << "================= List of recent deaths in last 30 days =======================" << endl<<endl;
