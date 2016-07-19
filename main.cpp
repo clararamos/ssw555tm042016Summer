@@ -1,5 +1,5 @@
 /* CS 555 WS
- * Project 08 - GEDCOM parser : Sprint 3
+ * Project 10 - GEDCOM parser : Sprint 4
  * Clara Ramos, Larisa Machado, Varun Kumar
  * We pledge our honor that we have abided by the Stevens Honor System.
  */
@@ -113,6 +113,8 @@ int foundAZero() {
 				indiv = true;
 				indiv_it++;
 				INDIs[indiv_it][4] = "-1";
+				INDIs[indiv_it][5] = "-1";
+				INDIs[indiv_it][6] = "-1";
 			} else if (data == "FAM") {
 				fam = true;
 				fam_it++;
@@ -162,10 +164,12 @@ int foundAOne() {
 		}
 		else if(data == "CHIL" && fam == true) {
 			test >> data;
-			char* childID = &data[0];
-			char* ID = strtok(childID, " /@I");
-			FAMs[fam_it][child_it] = ID;
-			child_it++;
+			if(child_it < 40) {
+				char* childID = &data[0];
+				char* ID = strtok(childID, " /@I");
+				FAMs[fam_it][child_it] = ID;
+				child_it++;
+			}
 		}
 		tag = data;
 		restOfLine();
@@ -586,6 +590,39 @@ void listCurrentAge() {
 				age--;
 			}
 			currentAges[j] = age;
+		}
+	}
+}
+
+/* US29: List Deceased Individuals
+ * prints name and death date of deceased INDIs
+ */
+void deceasedINDIs() {
+	for(int j = 1; j <= indiv_it; j++) {
+		if(INDIs[j][4] != "-1") {
+			cout << INDIs[j][0] << " " << INDIs[j][1] << " (" << unique_id[j] << ") is deceased." << '\n';
+			cout << "  Death Date:" << INDIs[j][4] << '\n';
+
+			result << INDIs[j][0] << " " << INDIs[j][1] << " (" << unique_id[j] << ") is deceased." << endl;
+			result << "  Death Date:" << INDIs[j][4] << endl;
+		}
+	}
+}
+
+/* US31: List Unmarried over 30 years old
+ * prints name, current age, and birth date of all single INDIs over 30
+ */
+void unmarriedOver30() {
+	listCurrentAge();
+	for(int j = 1; j <= indiv_it; j++) {
+		if(currentAges[j] > 30 && INDIs[j][6] == "-1") {
+			cout << INDIs[j][0] << " " << INDIs[j][1] << " (" << unique_id[j] << ") is unmarried and over 30 years old." << '\n';
+			cout << "  Birth Date:" << INDIs[j][3] << '\n';
+			cout << "  Current Age: " << currentAges[j] << '\n';
+
+			result << INDIs[j][0] << " " << INDIs[j][1] << " (" << unique_id[j] << ") is unmarried and over 30 years old." << endl;
+			result << "  Birth Date:" << INDIs[j][3] << endl;
+			result << "  Current Age: " << currentAges[j] << endl;
 		}
 	}
 }
@@ -1070,7 +1107,7 @@ int main(int argc, char* argv[]) {
 
 	Date dt = getCurrentDate();
 	cout << '\n' << "Current Date: " << dt.m << "/" << dt.d << "/" << dt.y << '\n';
-	result << endl << "Current Date: " << dt.m << "/" << dt.d << "/" << dt.y << '\n';
+	result << endl << "Current Date: " << dt.m << "/" << dt.d << "/" << dt.y << endl;
 
 	//populate the array currentAges[] with all current ages, if applicable
 	listCurrentAge(); //US27
@@ -1092,14 +1129,14 @@ int main(int argc, char* argv[]) {
 			cout << "  Deathdate:" << INDIs[j][4] << '\n';
 			result << "  Deathdate:" << INDIs[j][4] << endl;
 		} else {
-			cout << "  Current age: " << currentAges[j] << '\n';
-			result << "  Current age: " << currentAges[j] << endl;
+			cout << "  US27 Current Age: " << currentAges[j] << '\n';
+			result << "  US27 Current Age: " << currentAges[j] << endl;
 		}
 	}
 
 	//print the family IDs as well as names and IDs of all husbands and wives
-	cout << '\n' << "========= Summary of all FAMs ==============" << '\n';
-	result << '\n' << "========= Summary of all FAMs ==============" << endl;
+	cout << '\n' << "========================== Summary of all FAMs ==========================" << '\n';
+	result << '\n' << "========================== Summary of all FAMs ==========================" << endl;
 	for(j = 1; j <= fam_it; j++)
 	{
 		cout << "Family ID: " << unique_fam[j] << ": " << '\n';
@@ -1172,7 +1209,15 @@ int main(int argc, char* argv[]) {
 	result<<'\n'<<"========================== US38: List of upcoming birthdays ============================="<<'\n'<<'\n';
 	upcomingBirthdays();
 
-	
+	//List all deceased individuals in a GEDCOM file
+	cout<< '\n' << "========================== US29: List of deceased individuals =============================" << '\n';
+	result<< endl << "========================== US29: List of deceased individuals =============================" << endl;
+	deceasedINDIs(); //US29
+
+	//List all living people over 30 who have never been married in a GEDCOM file
+	cout << '\n' <<"========================== US31: List of unmarried over 30 =============================" << '\n';
+	result << endl <<"========================== US31: List of unmarried over 30 =============================" << endl;
+	unmarriedOver30(); //US31
 	
 	test.close();
 	result.close();
