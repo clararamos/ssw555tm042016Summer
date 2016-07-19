@@ -870,6 +870,53 @@ void recentBirths()
 	}
 
 }
+void upcomingBirthdays()
+{
+	time_t currentTime;
+  	struct tm *localTime;
+
+  	time( &currentTime );                   // Get the current time
+  	localTime = localtime( &currentTime );  // Convert the current time to the local time
+
+  	int Day    = localTime->tm_mday;
+  	int Month  = localTime->tm_mon + 1;
+ 	int Year   = localTime->tm_year + 1900;
+ 	int n1 = Month*30 + Day;
+ 	//cout<<" ================n1 ================="<<n1<<'\n';
+ 	
+	for(int j = 1; j <= indiv_it; j++)
+	{
+		//check if the birth date exists and individual is not dead
+		if((INDIs[j][3]!="-1")&&(INDIs[j][4]=="-1"))
+		{
+		string date = INDIs[j][3];
+
+		string arr[3];
+    	int i = 0;
+    	stringstream ssin(date);
+    	while (ssin.good() && i < 4){
+        ssin >> arr[i];
+        ++i;
+        }
+
+  		int d    =atoi(arr[0].c_str()) ;
+  		int mt  = monthToInt(arr[1]);
+ 		int yr   = atoi(arr[2].c_str());
+ 		int n2= mt*30 + d;
+ 		//cout << "Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<" " <<"is"<< INDIs[j][3] <<'\n';
+ 		//cout<<" ================== n2============="<<n2<<'\n';
+ 		int n = n2-n1;
+ 		//cout<< "================= n ==============="<<n<<'\n';
+ 		
+ 		if((n>=0) && (n<=30))
+ 		{
+ 			cout << "Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<" " <<"is"<< INDIs[j][3] <<'\n';
+			result<<"Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<" " <<"is"<< INDIs[j][3] <<'\n';	
+		 }	
+	}
+	}
+	
+}
 
 void livingMarried()
 {
@@ -1107,22 +1154,25 @@ int main(int argc, char* argv[]) {
 	//Fewer than 15 siblings in a family
 	fewersiblings(); //US15
 
-	cout << '\n' << "=================== List of recent deaths in last 30 days =======================" << '\n'<<'\n';
-	result << '\n' << "================= List of recent deaths in last 30 days =======================" << endl<<endl;
-	// prints deaths in last 30 days
-	recentDeaths();// US36
+	cout << '\n' << "=================== US36: List of recent deaths in last 30 days =======================" << '\n'<<'\n';
+	result << '\n' << "================= US36: List of recent deaths in last 30 days =======================" << endl<<endl;
+	recentDeaths();
 
-	cout<<'\n'<<"==========================  List of recent Survivors ============================="<<'\n'<<'\n';
-	result<<'\n'<<"========================== List of recent Survivors ============================="<<'\n'<<'\n';
-	recentSurvivors();// US37
+	cout<<'\n'<<"========================== US37: List of recent Survivors ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US37: List of recent Survivors ============================="<<'\n'<<'\n';
+	recentSurvivors();
 
-	cout<<'\n'<<"========================== List of recent Births ============================="<<'\n'<<'\n';
-	result<<'\n'<<"========================== List of recent Births ============================="<<'\n'<<'\n';
-	recentBirths();// US35
+	cout<<'\n'<<"========================== US35: List of recent Births ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US35: List of recent Births ============================="<<'\n'<<'\n';
+	recentBirths();
 	
-	cout<<'\n'<<"========================== List of living married ============================="<<'\n'<<'\n';
-	result<<'\n'<<"========================== List of living married ============================="<<'\n'<<'\n';
-	livingMarried();// US30
+	cout<<'\n'<<"========================== US30: List of living married ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US30: List of living married ============================="<<'\n'<<'\n';
+	livingMarried();
+	
+	cout<<'\n'<<"========================== US38: List of upcoming birthdays ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US38: List of upcoming birthdays ============================="<<'\n'<<'\n';
+	upcomingBirthdays();
 
 	test.close();
 	result.close();

@@ -1,5 +1,5 @@
-Reading from file: test.ged
-Current Date: 7/17/2016
+Reading from file: GEDCOM_test.ged
+Current Date: 7/19/2016
 
 ========================== Summary of all INDIs ============================
 @I1@: Clara Ramos
@@ -16,8 +16,8 @@ Current Date: 7/17/2016
   Current age: 11
 @I4@: Allison Ramos
   Gender: F
-  Birthdate: 30 JUN 2016
-  Current age: 0
+  Birthdate: 31 JUL 2016
+  Current age: -1
 @I5@: David Paz
   Gender: M
   Birthdate: 13 SEP 1939
@@ -114,7 +114,7 @@ Anomaly US08: Birth Date of Bobby Paz (@I12@) occurs after parents' divorce in F
   Birth Date: 30 APR 2005
 Anomaly US09: Birth Date of Allison Ramos (@I4@) occurs after parent's (@I2@) death in Family @F1@.
   Death Date: 22 JUN 2016
-  Birth Date: 30 JUN 2016
+  Birth Date: 31 JUL 2016
 Anomaly US09: Birth Date of Sally Paz (@I2@) occurs after parent's (@I5@) death in Family @F2@.
   Death Date: 12 AUG 1999
   Birth Date: 7 MAY 2005
@@ -157,27 +157,27 @@ Error US22:Individual ID: @I2@ of Tito Ramos is conflicting with Individual ID: 
 
 Error US22: Family ID @F4@ is shared by two families
 
-================= List of recent deaths in last 30 days =======================
+================= US36: List of recent deaths in last 30 days =======================
 
-Death date of Tito Ramos   is 22 JUN 2016
- having individual Id: @I2@ & Family id:@F1@
+Death date of Tito Ramos   is 22 JUN 2016 having individual Id: @I2@ & Family id:@F1@
 
-========================== List of recent Survivors =============================
+========================== US37: List of recent Survivors =============================
 
-Recent death of Tito Ramos   on 22 JUN 2016
- with family id : @F1@
+Recent death of Tito Ramos   on 22 JUN 2016 with family id : @F1@
 Family members:
 Wife Name : Sally Paz
 Child Name : Clara Ramos
 Child Name : Allison Ramos
 
-========================== List of recent Births =============================
+========================== US35: List of recent Births =============================
 
-Birth date of Allison Ramos is 30 JUN 2016
- with individual Id: @I4@ & Family id:@F3@
 
-========================== List of living married =============================
+========================== US30: List of living married =============================
 
 Living couple from family @F4@:
-Husband Name: Francis Paz and Wife Name: May Tobar Married on 14 FEB 2011
- with family ID:@F4@
+Husband Name: Francis Paz and Wife Name: May Tobar Married on 14 FEB 2011 with family ID:@F4@
+
+========================== US38: List of upcoming birthdays =============================
+
+Birth date of Allison Ramos is 31 JUL 2016
+Birth date of Bonnie Paz is 10 AUG 2000
