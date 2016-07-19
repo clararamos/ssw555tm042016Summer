@@ -911,8 +911,7 @@ void upcomingBirthdays()
 			result<<"Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<" " <<"is"<< INDIs[j][3] <<'\n';	
 		 }	
 	}
-	}
-	
+	}	
 }
 
 void livingMarried()
@@ -937,6 +936,8 @@ void livingMarried()
 		}			
 	}	
 }
+
+
 
 /* US03: Birth should come before death
  * prints error message if INDI's birth date occurs after death
@@ -1171,6 +1172,8 @@ int main(int argc, char* argv[]) {
 	result<<'\n'<<"========================== US38: List of upcoming birthdays ============================="<<'\n'<<'\n';
 	upcomingBirthdays();
 
+	
+	
 	test.close();
 	result.close();
 	return 0;
