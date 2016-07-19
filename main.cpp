@@ -882,7 +882,6 @@ void upcomingBirthdays()
   	int Month  = localTime->tm_mon + 1;
  	int Year   = localTime->tm_year + 1900;
  	int n1 = Month*30 + Day;
- 	//cout<<" ================n1 ================="<<n1<<'\n';
  	
 	for(int j = 1; j <= indiv_it; j++)
 	{
@@ -903,10 +902,8 @@ void upcomingBirthdays()
   		int mt  = monthToInt(arr[1]);
  		int yr   = atoi(arr[2].c_str());
  		int n2= mt*30 + d;
- 		//cout << "Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<" " <<"is"<< INDIs[j][3] <<'\n';
- 		//cout<<" ================== n2============="<<n2<<'\n';
+
  		int n = n2-n1;
- 		//cout<< "================= n ==============="<<n<<'\n';
  		
  		if((n>=0) && (n<=30))
  		{
