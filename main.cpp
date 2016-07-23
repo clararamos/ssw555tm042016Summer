@@ -12,6 +12,11 @@
 #include <ctime>
 #include <stdlib.h>
 #include <sstream>
+#include <utility>
+#include <map>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 
 /* Global variables
@@ -1055,11 +1060,67 @@ void fewersiblings(){
 				cout << "Error US15: Family @f" << j << "@" << " has more than 15 siblings" << endl;
 				result << "Error US15: Family @f" << j << "@" << " has more than 15 siblings" << endl;
 			}
-
-
-
   		}
+}
 
+
+class sort_map
+{
+	public:
+	string key;
+	int val;
+};
+
+bool Sort_by(const sort_map& a ,const sort_map& b)
+{
+	return a.val < b.val;
+}
+
+void orderSiblingsbyAge()
+{
+	
+	char** indiv = (char**)malloc(4*sizeof(char*));
+	Date dt = getCurrentDate();
+	int age,id,temp;
+	
+	map<string,int> d;
+	map<string,int>::iterator it;
+	vector< sort_map > v;
+	vector< sort_map >::iterator itv;
+	sort_map sm;
+
+	for(int j = 1; j<= fam_it ; j++) {
+		for(int k = 5; k < 40 && FAMs[j][k] != "-1"; k++) {
+			id = atoi(FAMs[j][k].c_str());
+			currentAges[id] = -1;
+			
+		if(INDIs[id][4] == "-1") {
+			char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
+			INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
+			indiv = splitTheDate(indivDate);
+			Date indiBirth = {atoi(indiv[0]), monthToInt(indiv[1]), atoi(indiv[2])};
+
+			age = dt.y - indiBirth.y;
+			if(dt.m < indiBirth.m || (dt.m == indiBirth.m && dt.d < indiBirth.d)) {
+				age--;
+			}
+			currentAges[id] = age;
+		    d[INDIs[id][0] + " " + INDIs[id][1]] = age;
+			
+		}
+	}
+}
+	for (it = d.begin(); it != d.end(); ++it)
+		{
+		sm.key = (*it).first; sm.val = (*it).second;
+		v.push_back(sm);
+		}
+	
+		sort(v.begin(),v.end(),Sort_by);
+	
+	for (itv = v.begin(); itv != v.end(); ++itv)
+	    {cout << (*itv).key << " : " << (*itv).val << endl;}
+	
 
 }
 
@@ -1205,9 +1266,14 @@ int main(int argc, char* argv[]) {
 	result<<'\n'<<"========================== US30: List of living married ============================="<<'\n'<<'\n';
 	livingMarried();
 	
+	
 	cout<<'\n'<<"========================== US38: List of upcoming birthdays ============================="<<'\n'<<'\n';
 	result<<'\n'<<"========================== US38: List of upcoming birthdays ============================="<<'\n'<<'\n';
 	upcomingBirthdays();
+	
+	cout<<'\n'<<"========================== US28 List of ordered sibling's age ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US28 List of ordered sibling's age ============================="<<'\n'<<'\n';
+	orderSiblingsbyAge();
 
 	//List all deceased individuals in a GEDCOM file
 	cout<< '\n' << "========================== US29: List of deceased individuals =============================" << '\n';
@@ -1218,6 +1284,8 @@ int main(int argc, char* argv[]) {
 	cout << '\n' <<"========================== US31: List of unmarried over 30 =============================" << '\n';
 	result << endl <<"========================== US31: List of unmarried over 30 =============================" << endl;
 	unmarriedOver30(); //US31
+	
+	
 	
 	test.close();
 	result.close();
