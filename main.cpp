@@ -1023,34 +1023,38 @@ void divorceBeforedeath()
 	char divorce_buf[16];
 	char death_buf[16];
 	int id;
-	for (int j=1;j<= fam_it;j++){
-		if (FAMs[j][3]!= "-1"){
+	for (int j=1;j<= fam_it;j++)
+	{
+		if (FAMs[j][3]!= "-1")
+		{
 			strcpy(divorce_buf,FAMs[j][3].c_str());
 			divorce = splitTheDate(divorce_buf);
-		for(int k=0;k<2;k++){
-		    if(INDIs[k][4]!="-1"){
+			
+			for(int k=0;k<2;k++)
+			{
+		    	if(INDIs[k][4]!="-1")
+				{
 		    	id = atoi(FAMs[j][k].c_str());
 				strcpy(death_buf,INDIs[j][k].c_str());
 				death = splitTheDate(death_buf);
-		    	if(compareDates(divorce,death)==0){
-				cout << "Error US02: Divorce Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after death date in Family @F" << j << "@." <<endl;
+		    	if(compareDates(divorce,death)==0)
+				{
+				cout << "Error US06: Divorce Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after death date in Family @F" << j << "@." <<endl;
 				cout << "  Death Date:" << INDIs[id][4] <<endl;
 				cout << "  Divorce Date:" << FAMs[j][3] << '\n';
 
-				result << "Error US02: Divorce Date of " << INDIs[k][0] << " " << INDIs[k][1] << " (" << unique_id[k] << ") occurs after death date in Family @F" << j << "@." <<endl;
+				result << "Error US06: Divorce Date of " << INDIs[k][0] << " " << INDIs[k][1] << " (" << unique_id[k] << ") occurs after death date in Family @F" << j << "@." <<endl;
 				result << "  Divorce Date:" << FAMs[j][3] <<endl;
 				result << "  Death Date:" << INDIs[id][4] <<endl;
 
+				}
+			
 			}
-			free(divorce);
-	    	free(death);
 			}
-
-		}
-
 		}
 	}
-
+	free(divorce);
+	free(death);
 }
 //US 15: Fewer than 15 siblings in a family
 void fewersiblings(){
@@ -1245,7 +1249,7 @@ int main(int argc, char* argv[]) {
 	bornBeforedeath(); //US03
 
 	//Divorce date should come before death date
-	//divorceBeforedeath(); //US06
+	divorceBeforedeath(); //US06
 
 	//Fewer than 15 siblings in a family
 	fewersiblings(); //US15

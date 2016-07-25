@@ -1,5 +1,5 @@
 Reading from file: GEDCOM_test.ged
-Current Date: 7/23/2016
+Current Date: 7/25/2016
 
 ========================== Summary of all INDIs ============================
 @I1@: Clara Ramos
@@ -106,9 +106,6 @@ Anomaly US08: Birth Date of Jake Paz (@I10@) occurs before parents' marriage in 
 Anomaly US08: Birth Date of Sally Paz (@I2@) occurs after parents' divorce in Family @F2@.
   Divorce Date: 10 AUG 1939
   Birth Date: 7 MAY 2006
-Anomaly US08: Birth Date of Bonnie Paz (@I11@) occurs after parents' divorce in Family @F2@.
-  Divorce Date: 10 AUG 1939
-  Birth Date: 10 AUG 2000
 Anomaly US08: Birth Date of Bobby Paz (@I12@) occurs after parents' divorce in Family @F2@.
   Divorce Date: 10 AUG 1939
   Birth Date: 30 APR 2005
@@ -153,6 +150,9 @@ Error US21-Correct gender for May Tobar having gender Male must be female as she
 Error US22:Individual ID: @I2@ of Tito Ramos is conflicting with Individual ID: @I2@ of Sally Paz
 
 Error US22: Family ID @F4@ is shared by two families
+Error US06: Divorce Date of   () occurs after death date in Family @F2@.
+  Divorce Date: 12 SEP 2000
+  Death Date: 12 AUG 1999
 
 ================= US36: List of recent deaths in last 30 days =======================
 
