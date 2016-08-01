@@ -1,5 +1,5 @@
 /* CS 555 WS
- * Project 08 - GEDCOM parser : Sprint 3
+ * Project 10 - GEDCOM parser : Sprint 4
  * Clara Ramos, Larisa Machado, Varun Kumar
  * We pledge our honor that we have abided by the Stevens Honor System.
  */
@@ -12,6 +12,11 @@
 #include <ctime>
 #include <stdlib.h>
 #include <sstream>
+#include <utility>
+#include <map>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 
 /* Global variables
@@ -113,6 +118,8 @@ int foundAZero() {
 				indiv = true;
 				indiv_it++;
 				INDIs[indiv_it][4] = "-1";
+				INDIs[indiv_it][5] = "-1";
+				INDIs[indiv_it][6] = "-1";
 			} else if (data == "FAM") {
 				fam = true;
 				fam_it++;
@@ -162,10 +169,12 @@ int foundAOne() {
 		}
 		else if(data == "CHIL" && fam == true) {
 			test >> data;
-			char* childID = &data[0];
-			char* ID = strtok(childID, " /@I");
-			FAMs[fam_it][child_it] = ID;
-			child_it++;
+			if(child_it < 40) {
+				char* childID = &data[0];
+				char* ID = strtok(childID, " /@I");
+				FAMs[fam_it][child_it] = ID;
+				child_it++;
+			}
 		}
 		tag = data;
 		restOfLine();
@@ -590,6 +599,39 @@ void listCurrentAge() {
 	}
 }
 
+/* US29: List Deceased Individuals
+ * prints name and death date of deceased INDIs
+ */
+void deceasedINDIs() {
+	for(int j = 1; j <= indiv_it; j++) {
+		if(INDIs[j][4] != "-1") {
+			cout << INDIs[j][0] << " " << INDIs[j][1] << " (" << unique_id[j] << ") is deceased." << '\n';
+			cout << "  Death Date:" << INDIs[j][4] << '\n';
+
+			result << INDIs[j][0] << " " << INDIs[j][1] << " (" << unique_id[j] << ") is deceased." << endl;
+			result << "  Death Date:" << INDIs[j][4] << endl;
+		}
+	}
+}
+
+/* US31: List Unmarried over 30 years old
+ * prints name, current age, and birth date of all single INDIs over 30
+ */
+void unmarriedOver30() {
+	listCurrentAge();
+	for(int j = 1; j <= indiv_it; j++) {
+		if(currentAges[j] > 30 && INDIs[j][6] == "-1") {
+			cout << INDIs[j][0] << " " << INDIs[j][1] << " (" << unique_id[j] << ") is unmarried and over 30 years old." << '\n';
+			cout << "  Birth Date:" << INDIs[j][3] << '\n';
+			cout << "  Current Age: " << currentAges[j] << '\n';
+
+			result << INDIs[j][0] << " " << INDIs[j][1] << " (" << unique_id[j] << ") is unmarried and over 30 years old." << endl;
+			result << "  Birth Date:" << INDIs[j][3] << endl;
+			result << "  Current Age: " << currentAges[j] << endl;
+		}
+	}
+}
+
 void checkGender()
 {
 	int j;
@@ -870,6 +912,49 @@ void recentBirths()
 	}
 
 }
+void upcomingBirthdays()
+{
+	time_t currentTime;
+  	struct tm *localTime;
+
+  	time( &currentTime );                   // Get the current time
+  	localTime = localtime( &currentTime );  // Convert the current time to the local time
+
+  	int Day    = localTime->tm_mday;
+  	int Month  = localTime->tm_mon + 1;
+ 	int Year   = localTime->tm_year + 1900;
+ 	int n1 = Month*30 + Day;
+ 	
+	for(int j = 1; j <= indiv_it; j++)
+	{
+		//check if the birth date exists and individual is not dead
+		if((INDIs[j][3]!="-1")&&(INDIs[j][4]=="-1"))
+		{
+		string date = INDIs[j][3];
+
+		string arr[3];
+    	int i = 0;
+    	stringstream ssin(date);
+    	while (ssin.good() && i < 4){
+        ssin >> arr[i];
+        ++i;
+        }
+
+  		int d    =atoi(arr[0].c_str()) ;
+  		int mt  = monthToInt(arr[1]);
+ 		int yr   = atoi(arr[2].c_str());
+ 		int n2= mt*30 + d;
+
+ 		int n = n2-n1;
+ 		
+ 		if((n>=0) && (n<=30))
+ 		{
+ 			cout << "Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<" " <<"is"<< INDIs[j][3] <<'\n';
+			result<<"Birth date of " << INDIs[j][0] << " " << INDIs[j][1] <<" " <<"is"<< INDIs[j][3] <<'\n';	
+		 }	
+	}
+	}	
+}
 
 void livingMarried()
 {
@@ -893,6 +978,8 @@ void livingMarried()
 		}			
 	}	
 }
+
+
 
 /* US03: Birth should come before death
  * prints error message if INDI's birth date occurs after death
@@ -936,34 +1023,38 @@ void divorceBeforedeath()
 	char divorce_buf[16];
 	char death_buf[16];
 	int id;
-	for (int j=1;j<= fam_it;j++){
-		if (FAMs[j][3]!= "-1"){
+	for (int j=1;j<= fam_it;j++)
+	{
+		if (FAMs[j][3]!= "-1")
+		{
 			strcpy(divorce_buf,FAMs[j][3].c_str());
 			divorce = splitTheDate(divorce_buf);
-		for(int k=0;k<2;k++){
-		    if(INDIs[k][4]!="-1"){
+			
+			for(int k=0;k<2;k++)
+			{
+		    	if(INDIs[k][4]!="-1")
+				{
 		    	id = atoi(FAMs[j][k].c_str());
 				strcpy(death_buf,INDIs[j][k].c_str());
 				death = splitTheDate(death_buf);
-		    	if(compareDates(divorce,death)==0){
-				cout << "Error US02: Divorce Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after death date in Family @F" << j << "@." <<endl;
+		    	if(compareDates(divorce,death)==0)
+				{
+				cout << "Error US06: Divorce Date of " << INDIs[id][0] << " " << INDIs[id][1] << " (" << unique_id[id] << ") occurs after death date in Family @F" << j << "@." <<endl;
 				cout << "  Death Date:" << INDIs[id][4] <<endl;
 				cout << "  Divorce Date:" << FAMs[j][3] << '\n';
 
-				result << "Error US02: Divorce Date of " << INDIs[k][0] << " " << INDIs[k][1] << " (" << unique_id[k] << ") occurs after death date in Family @F" << j << "@." <<endl;
+				result << "Error US06: Divorce Date of " << INDIs[k][0] << " " << INDIs[k][1] << " (" << unique_id[k] << ") occurs after death date in Family @F" << j << "@." <<endl;
 				result << "  Divorce Date:" << FAMs[j][3] <<endl;
 				result << "  Death Date:" << INDIs[id][4] <<endl;
 
+				}
+			
 			}
-			free(divorce);
-	    	free(death);
 			}
-
-		}
-
 		}
 	}
-
+	free(divorce);
+	free(death);
 }
 //US 15: Fewer than 15 siblings in a family
 void fewersiblings(){
@@ -973,11 +1064,69 @@ void fewersiblings(){
 				cout << "Error US15: Family @f" << j << "@" << " has more than 15 siblings" << endl;
 				result << "Error US15: Family @f" << j << "@" << " has more than 15 siblings" << endl;
 			}
-
-
-
   		}
+}
 
+
+class sort_map
+{
+	public:
+	string key;
+	int val;
+};
+
+bool Sort_by(const sort_map& a ,const sort_map& b)
+{
+	return a.val < b.val;
+}
+
+void orderSiblingsbyAge()
+{
+	
+	char** indiv = (char**)malloc(4*sizeof(char*));
+	Date dt = getCurrentDate();
+	int age,id,temp;
+	
+	map<string,int> d;
+	map<string,int>::iterator it;
+	vector< sort_map > v;
+	vector< sort_map >::iterator itv;
+	sort_map sm;
+
+	for(int j = 1; j<= fam_it ; j++) {
+		for(int k = 5; k < 40 && FAMs[j][k] != "-1"; k++) {
+			id = atoi(FAMs[j][k].c_str());
+			currentAges[id] = -1;
+			
+		if(INDIs[id][4] == "-1") {
+			char* indivDate = (char*)malloc((INDIs[id][3].length()+1)*sizeof(char));
+			INDIs[id][3].copy(indivDate, INDIs[id][3].length(), 0);
+			indiv = splitTheDate(indivDate);
+			Date indiBirth = {atoi(indiv[0]), monthToInt(indiv[1]), atoi(indiv[2])};
+
+			age = dt.y - indiBirth.y;
+			if(dt.m < indiBirth.m || (dt.m == indiBirth.m && dt.d < indiBirth.d)) {
+				age--;
+			}
+			currentAges[id] = age;
+		    d[INDIs[id][0] + " " + INDIs[id][1]] = age;
+			
+		}
+	}
+}
+	for (it = d.begin(); it != d.end(); ++it)
+		{
+		sm.key = (*it).first; sm.val = (*it).second;
+		v.push_back(sm);
+		}
+	
+		sort(v.begin(),v.end(),Sort_by);
+	
+	for (itv = v.begin(); itv != v.end(); ++itv)
+	    {cout << (*itv).key << " : " << (*itv).val << endl;
+	    result << (*itv).key << " : " << (*itv).val << endl;
+	    }
+	
 
 }
 
@@ -1025,7 +1174,7 @@ int main(int argc, char* argv[]) {
 
 	Date dt = getCurrentDate();
 	cout << '\n' << "Current Date: " << dt.m << "/" << dt.d << "/" << dt.y << '\n';
-	result << endl << "Current Date: " << dt.m << "/" << dt.d << "/" << dt.y << '\n';
+	result << endl << "Current Date: " << dt.m << "/" << dt.d << "/" << dt.y << endl;
 
 	//populate the array currentAges[] with all current ages, if applicable
 	listCurrentAge(); //US27
@@ -1047,14 +1196,14 @@ int main(int argc, char* argv[]) {
 			cout << "  Deathdate:" << INDIs[j][4] << '\n';
 			result << "  Deathdate:" << INDIs[j][4] << endl;
 		} else {
-			cout << "  Current age: " << currentAges[j] << '\n';
-			result << "  Current age: " << currentAges[j] << endl;
+			cout << "  US27 Current Age: " << currentAges[j] << '\n';
+			result << "  US27 Current Age: " << currentAges[j] << endl;
 		}
 	}
 
 	//print the family IDs as well as names and IDs of all husbands and wives
-	cout << '\n' << "========= Summary of all FAMs ==============" << '\n';
-	result << '\n' << "========= Summary of all FAMs ==============" << endl;
+	cout << '\n' << "========================== Summary of all FAMs ==========================" << '\n';
+	result << '\n' << "========================== Summary of all FAMs ==========================" << endl;
 	for(j = 1; j <= fam_it; j++)
 	{
 		cout << "Family ID: " << unique_fam[j] << ": " << '\n';
@@ -1102,28 +1251,48 @@ int main(int argc, char* argv[]) {
 	bornBeforedeath(); //US03
 
 	//Divorce date should come before death date
-	//divorceBeforedeath(); //US06
+	divorceBeforedeath(); //US06
 
 	//Fewer than 15 siblings in a family
 	fewersiblings(); //US15
 
-	cout << '\n' << "=================== List of recent deaths in last 30 days =======================" << '\n'<<'\n';
-	result << '\n' << "================= List of recent deaths in last 30 days =======================" << endl<<endl;
-	// prints deaths in last 30 days
-	recentDeaths();// US36
+	cout << '\n' << "=================== US36: List of recent deaths in last 30 days =======================" << '\n'<<'\n';
+	result << '\n' << "================= US36: List of recent deaths in last 30 days =======================" << endl<<endl;
+	recentDeaths();
 
-	cout<<'\n'<<"==========================  List of recent Survivors ============================="<<'\n'<<'\n';
-	result<<'\n'<<"========================== List of recent Survivors ============================="<<'\n'<<'\n';
-	recentSurvivors();// US37
+	cout<<'\n'<<"========================== US37: List of recent Survivors ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US37: List of recent Survivors ============================="<<'\n'<<'\n';
+	recentSurvivors();
 
-	cout<<'\n'<<"========================== List of recent Births ============================="<<'\n'<<'\n';
-	result<<'\n'<<"========================== List of recent Births ============================="<<'\n'<<'\n';
-	recentBirths();// US35
+	cout<<'\n'<<"========================== US35: List of recent Births ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US35: List of recent Births ============================="<<'\n'<<'\n';
+	recentBirths();
 	
-	cout<<'\n'<<"========================== List of living married ============================="<<'\n'<<'\n';
-	result<<'\n'<<"========================== List of living married ============================="<<'\n'<<'\n';
-	livingMarried();// US30
+	cout<<'\n'<<"========================== US30: List of living married ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US30: List of living married ============================="<<'\n'<<'\n';
+	livingMarried();
+	
+	
+	cout<<'\n'<<"========================== US38: List of upcoming birthdays ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US38: List of upcoming birthdays ============================="<<'\n'<<'\n';
+	upcomingBirthdays();
+	
+	cout<<'\n'<<"========================== US28 List of ordered sibling's age ============================="<<'\n'<<'\n';
+	result<<'\n'<<"========================== US28 List of ordered sibling's age ============================="<<'\n'<<'\n';
+	orderSiblingsbyAge();
 
+	//List all deceased individuals in a GEDCOM file
+	cout<< '\n' << "========================== US29: List of deceased individuals =============================" << '\n';
+	result<< endl << "========================== US29: List of deceased individuals =============================" << endl;
+	deceasedINDIs(); //US29
+
+	//List all living people over 30 who have never been married in a GEDCOM file
+	cout << '\n' <<"========================== US31: List of unmarried over 30 =============================" << '\n';
+	result << endl <<"========================== US31: List of unmarried over 30 =============================" << endl;
+	unmarriedOver30(); //US31
+	
+	
+	
 	test.close();
 	result.close();
 	return 0;
