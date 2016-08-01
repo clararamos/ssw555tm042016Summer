@@ -1123,7 +1123,9 @@ void orderSiblingsbyAge()
 		sort(v.begin(),v.end(),Sort_by);
 	
 	for (itv = v.begin(); itv != v.end(); ++itv)
-	    {cout << (*itv).key << " : " << (*itv).val << endl;}
+	    {cout << (*itv).key << " : " << (*itv).val << endl;
+	    result << (*itv).key << " : " << (*itv).val << endl;
+	    }
 	
 
 }
